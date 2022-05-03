@@ -7,9 +7,14 @@ import { Main } from './lib/style/generalStyles';
 import Login from './pages/Login/Login';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Buyer from './pages/Buyer/Buyer';
+import Buyer from './pages/Buyer/Buyers';
 import Item from './pages/Item/Item';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import Sale from './pages/Sale/Sale';
+import Receipt from './pages/Receipts/Receipts';
+import Buyers from './pages/Buyer/Buyers';
+import UserManagement from './pages/UserManagement/UserManagement';
+import Home from './pages/Home/Home';
 
 const App = () => {
 
@@ -42,8 +47,12 @@ const App = () => {
               <Switch>
                 {isLoggedIn ? (
                   <>
-                    <ProtectedRoute exact path="/" component={Buyer} />
+                  <ProtectedRoute exact path="/" component={Home} />
+                    <ProtectedRoute path="/buyers" component={Buyers} />
                     <ProtectedRoute path="/items" component={Item} />
+                    <ProtectedRoute path="/sales" component={Sale} />
+                    <ProtectedRoute path="/receipts" component={Receipt} />
+                    <ProtectedRoute path="/management" component={UserManagement} />
                     {/*<ProtectedRoute
                       isAdminRoute={true}
                       path="/users"

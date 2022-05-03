@@ -45,7 +45,10 @@ export const TableHead = styled.th`
   line-height: 40px;
   padding: 12px 15px;
   width: 15%;
-  text-align: left;
+  text-align: center;
+  :nth-child(1){
+    text-align:left;
+  }
   @media screen and (max-width: 576px) {
     ${(props) =>
       props.dog === true &&
@@ -134,12 +137,29 @@ export const TableHead = styled.th`
       `}
   }
 `;
+export const TableHeadCenter = styled.th`
+  color: ${colors.white};
+  line-height: 40px;
+  padding: 12px 15px;
+  width: 15%;
+  text-align: left;
+  `;
+
+  export const TableDataCenter = styled.td`
+  padding: 12px 15px;
+  line-height: 40px;
+  width: 15%;
+  text-align: left;`
+  ;
 
 export const TableData = styled.td`
   padding: 12px 15px;
   line-height: 40px;
   width: 15%;
-  text-align: left;
+  text-align: center;
+  :nth-child(1){
+    text-align:left;
+  }
   @media screen and (max-width: 576px) {
     ${(props) =>
       props.dog === true &&

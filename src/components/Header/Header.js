@@ -31,9 +31,10 @@ const Header = (props) => {
               <Nav>
                 <NavItem exact to="/"> Početna </NavItem>
                 <NavItem to="/items"> Artikli </NavItem>
-                <NavItem to="/storage"> Skladište </NavItem>
-                <NavItem to="/litter"> Legla </NavItem>
-                <NavItem to="/buyer"> Kupci </NavItem>
+                <NavItem to="/sales"> Stanje </NavItem>
+                <NavItem to="/receipts"> Prodaja </NavItem>
+                <NavItem to="/buyers"> Kupci </NavItem>
+                <NavItem to="/management"> Upravljanje korisnicima </NavItem>
                 {props.isAdmin && <NavItem to="/users">Korisnici</NavItem>}
                 <NavItem to="/logout" onClick={() => props.onLogout()}>
                   Odjava

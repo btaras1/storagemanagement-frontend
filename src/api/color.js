@@ -1,15 +1,15 @@
 import apiOrigin from "./api";
 
-export const getAllItems = async (authToken) => {
-    return await fetch(`${apiOrigin}/item`, {
+export const getAllColors = async (authToken) => {
+    return await fetch(`${apiOrigin}/color`, {
       headers: {
         Authorization: "Bearer " + authToken,
       },
     }).then((res) => res.json());
   };
 
-  export const addItem = async (item, authToken) => {
-    return await fetch(`${apiOrigin}/item`, {
+  export const addColor = async (item, authToken) => {
+    return await fetch(`${apiOrigin}/color`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + authToken,
@@ -19,8 +19,8 @@ export const getAllItems = async (authToken) => {
     }).then((res) => res.json());
   };
 
-  export const updateItem = async (id, item, authToken) => {
-    return await fetch(`${apiOrigin}/item/${id}`, {
+  export const updateColor = async (id, item, authToken) => {
+    return await fetch(`${apiOrigin}/color/${id}`, {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + authToken,
@@ -30,8 +30,8 @@ export const getAllItems = async (authToken) => {
     });
   };
 
-  export const deleteItem = async (id, authToken) => {
-    return fetch(`${apiOrigin}/item/${id}`, {
+  export const deleteColor = async (id, authToken) => {
+    return fetch(`${apiOrigin}/color/${id}`, {
       headers: {
         Authorization: "Bearer " + authToken,
       },
