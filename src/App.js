@@ -15,6 +15,7 @@ import Receipt from './pages/Receipts/Receipts';
 import Buyers from './pages/Buyer/Buyers';
 import UserManagement from './pages/UserManagement/UserManagement';
 import Home from './pages/Home/Home';
+import Procurement from './pages/Procurement/Procurement';
 
 const App = () => {
 
@@ -48,6 +49,7 @@ const App = () => {
                 {isLoggedIn ? (
                   <>
                   <ProtectedRoute exact path="/" component={Home} />
+                  <ProtectedRoute path="/procurement" component={Procurement} />
                     <ProtectedRoute path="/buyers" component={Buyers} />
                     <ProtectedRoute path="/items" component={Item} />
                     <ProtectedRoute path="/sales" component={Sale} />

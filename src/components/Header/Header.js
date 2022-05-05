@@ -32,6 +32,7 @@ const Header = (props) => {
                 <NavItem exact to="/"> Početna </NavItem>
                 <NavItem to="/items"> Artikli </NavItem>
                 <NavItem to="/sales"> Stanje </NavItem>
+                <NavItem to="/procurement"> Nabava </NavItem>
                 <NavItem to="/receipts"> Prodaja </NavItem>
                 <NavItem to="/buyers"> Kupci </NavItem>
                 <NavItem to="/management"> Upravljanje korisnicima </NavItem>
