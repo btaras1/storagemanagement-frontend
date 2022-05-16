@@ -55,7 +55,7 @@ const ProcurementView = ({data}) => {
                           <TableBody>
                           {data.itemProcurements.map((itemProcurement, index) => (
                               <TableRow key={index}>
-                              <TableData>{itemProcurement.item.value}</TableData>
+                              <TableData>{itemProcurement.item.itemType.value === "DOOR" ? (itemProcurement.item.value + '-' + itemProcurement.item.color.value) : (itemProcurement.item.value )}</TableData>
                               <TableData>{itemProcurement.quantity}</TableData>
                               </TableRow>
                               ))}
