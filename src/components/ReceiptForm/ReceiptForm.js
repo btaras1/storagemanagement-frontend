@@ -29,7 +29,7 @@ import { FaTrash, FaEdit, FaPlusSquare, FaFilePdf} from "react-icons/fa";
 import { getAllBuyers } from "../../api/buyer";
 import { addPReceipt } from "../../api/receipt";
 
-const ReceiptForm = () => {
+const ReceiptForm = ({fetchInitialData}) => {
 
   const authToken = localStorage.getItem("authToken");
   const [isLoading, setIsLoading] = useState(false);
@@ -187,6 +187,7 @@ const ReceiptForm = () => {
             }
             console.log(newReceipt);
             addPReceipt(newReceipt, authToken).then((response) => console.log(response));
+            fetchInitialData();
         }
         if(buyerOption == "EXISTING"){
             const newReceipt = {
@@ -197,6 +198,7 @@ const ReceiptForm = () => {
             }
             console.log(newReceipt);
             addPReceipt(newReceipt, authToken).then((response) => console.log(response));
+            fetchInitialData();
         }
     //   setIsLoading(true);
     //   setIsRequestFinished(false);

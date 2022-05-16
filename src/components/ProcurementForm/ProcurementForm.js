@@ -26,7 +26,7 @@ import InputBar from "../InputBar/InputBar";
 import { addProcurement } from "../../api/procurement";
 import { FaTrash, FaEdit, FaPlusSquare, FaFilePdf} from "react-icons/fa";
 
-const ProcurementForm = () => {
+const ProcurementForm = ({fetchInitialData}) => {
 
   const authToken = localStorage.getItem("authToken");
   const [isLoading, setIsLoading] = useState(false);
@@ -152,6 +152,7 @@ const ProcurementForm = () => {
                setIsRequestFinished(true);
                setIsError(false);
                setSuccessMessage("Uspješno ste dodali novi artikl!");
+               fetchInitialData();
                setTimeout(() => {
                  setIsRequestFinished(false);
                }, 4000);

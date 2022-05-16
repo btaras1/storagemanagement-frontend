@@ -88,7 +88,7 @@ const initialFetchData = async () => {
                 />
                 </RightColumn>
               </FormRow>
-            <ProcurementTable data={data}/>
+            <ProcurementTable fetchData={initialFetchData} data={data}/>
             
       </Section>
     </Main>

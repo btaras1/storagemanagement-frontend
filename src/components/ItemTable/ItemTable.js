@@ -25,7 +25,8 @@ const Table = ({
   head,
   data,
   type,
-  fetchData
+  fetchData,
+  refresh
 }) => {
   
   const [dog, setDog] = useState(null);
@@ -50,13 +51,17 @@ const Table = ({
     }
   };
 
+const handleFetchData = () => {
+  fetchData();
+}
+
   useEffect(() => {
     console.log(data);
   }, []);
 
   useEffect(() => {
-    
-  }, [data]);
+    handleFetchData();
+  }, [refresh]);
 
   return (
     <>

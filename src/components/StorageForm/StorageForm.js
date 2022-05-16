@@ -54,6 +54,7 @@ const StorageForm = (props) => {
             setIsRequestFinished(true);
             setIsError(false);
             setSuccessMessage("Uspješno ste ažurirali podatke!");
+            props.fetchData();
             setTimeout(() => {
               setIsRequestFinished(false);
             }, 4000);

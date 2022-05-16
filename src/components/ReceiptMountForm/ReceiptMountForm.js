@@ -30,7 +30,7 @@ import { getAllBuyers } from "../../api/buyer";
 import { addPReceipt, updateMountReceipt } from "../../api/receipt";
 import { getAllEmployees } from "../../api/employee";
 
-const ReceiptMountForm = ({passedItem}) => {
+const ReceiptMountForm = ({passedItem, fetchInitialData}) => {
 
   const authToken = localStorage.getItem("authToken");
   const [isLoading, setIsLoading] = useState(false);
@@ -125,6 +125,7 @@ const ReceiptMountForm = ({passedItem}) => {
         alert(values);
         console.log(values);
         updateMountReceipt(passedItem.id, values, authToken).then((response) => console.log(response));
+        fetchInitialData();
             //addPReceipt(newReceipt, authToken).then((response) => console.log(response));
         
     //   setIsLoading(true);

@@ -19,12 +19,33 @@ export const addProcurement = async (procurement, authToken) => {
     }).then((res) => res.json());
   };
 
-  export const getProcurementPdf = async (id, authToken) => {
-    return await fetch(`${apiOrigin}/procurement/pdf/${id}`, {
-      method: "GET",
+  export const getProcurementPdf = async (content) => {
+    return fetch(`${apiOrigin}/procurement/download/${content.id}`, {
+      method: 'GET',
       headers: {
-        Authorization: "Bearer " + authToken,
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/pdf',
+      },
+    })
+    .then((response) => response.blob())
+    .then((blob) => {
+      // Create blob link to download
+      const url = window.URL.createObjectURL(
+        new Blob([blob]),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute(
+        'download',
+        `NABAVA_${content.created}.pdf`,
+      );
+  
+      // Append to html link element page
+      document.body.appendChild(link);
+  
+      // Start download
+      link.click();
+  
+      // Clean up and remove the link
+      link.parentNode.removeChild(link);
     });
   };

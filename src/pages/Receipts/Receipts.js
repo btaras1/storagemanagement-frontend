@@ -38,18 +38,25 @@ const Receipt = () => {
     const authToken = localStorage.getItem("authToken");
 
     const fetchData = async () => {
+      setDefaultData(null);
+      setData(null);
       await getAllReceipts(authToken).then((items) => {
-      setData(items);
-      setDefaultData(items);
+        setDefaultData(items);
+        setData(items);
       });
       
       //updateView(option);
     }
     const initialFetchData = async () => {
+      setDefaultData(null);
+      setData(null);
       await getAllReceipts(authToken).then((items) => {
-        setData(items);
+        console.log("items");
+        console.log(items);
         setDefaultData(items);
+        setData(items);
         });
+        console.log()
      
       //setOption("-");
     }
@@ -68,8 +75,11 @@ const Receipt = () => {
 
     const updateInput = (input) => {
       console.log(input);
+      if(data != null && defaultData != null){
       switch (option) {
         case "Broj":
+          console.log("DEFAULT")
+          console.log(defaultData)
           const filteredReceiptsId = defaultData.filter((receipt) => {
             console.log(receipt);
             return receipt.id.toString().toLowerCase().includes(input.toLowerCase());
@@ -97,7 +107,7 @@ const Receipt = () => {
 
         break;
   
-      }
+      }}
     };
 
       const openAddModal = () => {
@@ -122,6 +132,10 @@ const Receipt = () => {
         updateInput(input);
       }, [input]);
 
+      useEffect(() => {
+        updateInput(input);
+      }, [defaultData]);
+
 
  
 
@@ -130,7 +144,7 @@ const Receipt = () => {
         <>
           {addPressed  && (
             <Modal title={"Dodaj"} setModal={openAddModal}>
-              <ReceiptForm />
+              <ReceiptForm fetchInitialData={fetchData}/>
             </Modal>
             )}
             <Main>
@@ -205,7 +219,7 @@ const Receipt = () => {
               <OptionText value="MOTOR">Motori</OptionText>
             </SelectText>*/}
               </FormRow>
-                  {data ? (
+                  {data != null ? (
                     <ReceiptTable
                     title = {"Stanje"}
                     head = {["Br.","Datum prodaje","Datum montiranja", "Kupac", "Grad"]}

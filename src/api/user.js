@@ -17,7 +17,7 @@ export const deleteUser = (id, authToken) => {
   });
 };
 
-export const addUser = (user, authToken) => {
+export const addUser = (user) => {
   return fetch(`${apiOrigin}/api/auth/signup`, {
     method: "POST",
     headers: {

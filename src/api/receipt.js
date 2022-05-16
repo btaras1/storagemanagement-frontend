@@ -62,12 +62,35 @@ export const getAllReceipts = async (authToken) => {
     }).then((res) => res.json());
   };
 
-  export const getReceiptPdf = async (id, authToken) => {
-    return await fetch(`${apiOrigin}/receipt/pdf/${id}`, {
-      method: "GET",
+  export const getReceiptPdf = async (content) => {
+    return fetch(`${apiOrigin}/receipt/download/${content.id}`, {
+      method: 'GET',
       headers: {
-        Authorization: "Bearer " + authToken,
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/pdf',
+      },
+    })
+    .then((response) => response.blob())
+    .then((blob) => {
+      // Create blob link to download
+      const url = window.URL.createObjectURL(
+        new Blob([blob]),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute(
+        'download',
+        `RACUN_${content.sold}.pdf`,
+      );
+  
+      // Append to html link element page
+      document.body.appendChild(link);
+  
+      // Start download
+      link.click();
+  
+      // Clean up and remove the link
+      link.parentNode.removeChild(link);
     });
   };
+
+  

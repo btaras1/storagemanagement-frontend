@@ -59,6 +59,10 @@ const Other = (props) => {
 
   }, [])
 
+  useEffect(() => {
+
+  }, [storageData, employeeData])
+
   const openEmployeeModal= () => {
     setAddEmployeePressed(!addEmployeePressed);
   }
@@ -69,12 +73,12 @@ const Other = (props) => {
     <>
     {addStoragePressed  && (
             <Modal title={"Dodavanje skladišta"} setModal={ openStorageModal}>
-              <StorageForm />
+              <StorageForm fetchData={initialFetchData}/>
             </Modal>
             )}
     {addEmployeePressed  && (
             <Modal title={"Dodavanje zaposlenika"} setModal={openEmployeeModal}>
-              <EmployeeForm />
+              <EmployeeForm fetchData={initialFetchData}/>
             </Modal>
             )}        
           {employeeData ? (

@@ -62,6 +62,8 @@ const openViewModal = (procurement) => {
     }
   };
 
+
+
   useEffect(() => {
     console.log(data);
   }, []);
@@ -121,7 +123,8 @@ const openViewModal = (procurement) => {
                       size={25}
                       onClick={() =>
                         {
-                          getReceiptPdf(content.id, authToken)
+                          console.log(content.id)
+                          getReceiptPdf(content)
                         }}
                     />
                   </TableData>

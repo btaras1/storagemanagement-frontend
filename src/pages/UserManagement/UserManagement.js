@@ -59,7 +59,7 @@ const UserManagement = (props) => {
     <>
     {addPressed  && (
             <Modal title={"Dodavanje korisnika"} setModal={openModal}>
-              <UserForm
+              <UserForm fetchData={initialFetchData}
               />
             </Modal>
             )}
@@ -76,11 +76,11 @@ const UserManagement = (props) => {
               </THead>
               <TableBody>
                 {data.map((content) => (
-                  <TableRow>
+                  <TableRow key={content.email}>
                     <TableData>{content.username}</TableData>
                     <TableData>{content.created}</TableData>
-                    {content.roles.map((role) => 
-                      <TableData>{role.name}</TableData>
+                    {content.roles.map((role, index) => 
+                      <TableData key={index}>{role.name}</TableData>
                     )}
                   </TableRow>
                 ))}

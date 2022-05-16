@@ -50,10 +50,10 @@ const UserForm = (props) => {
           username: values.username,
           email: values.email,
           password: values.password,
-          roles: values.roles,
+          roles: [values.roles],
         };
 
-        addUser(user, authToken)
+        addUser(user)
           .then((res) => {
             resetForm({});
             setIsLoading(false);
@@ -63,6 +63,7 @@ const UserForm = (props) => {
             setTimeout(() => {
               setIsRequestFinished(false);
             }, 4000);
+            props.fetchData();
           })
           .catch((err) => {
             setIsLoading(false);

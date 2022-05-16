@@ -23,7 +23,7 @@ import { addItem, updateItem } from "../../api/item";
 import { addColor, getAllColors, updateColor } from "../../api/color";
 import { getAllTypes } from "../../api/item-type";
 
-const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
+const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData, refresh}) => {
 
   const authToken = localStorage.getItem("authToken");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,13 +33,15 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
   const [colors, setColors] = useState([]);
   const [types, setTypes] = useState([]);
 
+
+
   useEffect(() => {
     // declare the data fetching function
     const fetchData = async () => {
       await getAllColors(authToken).then((items)=>setColors(items));
       await getAllTypes(authToken).then((items) => setTypes(items));
     }
-  
+    
     // call the function
     fetchData()
       // make sure to catch any error
@@ -63,12 +65,13 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
       setIsRequestFinished(false);
       const setType = types.find((item) => {return item.value === type});
       console.log(setType);
+      const currentColor = setType.value === 'DOOR' ? (JSON.parse(values.color)) : null;
       const item = {
         value: values.value,
         description: values.description,
         guide_needed: values.guide_needed,
         itemType: setType,
-        color: JSON.parse(values.color),
+        color: currentColor,
       };
       const color = {
         value: values.value
@@ -86,6 +89,8 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
           setTimeout(() => {
             setIsRequestFinished(false);
           }, 4000);
+          fetchData();
+          
         })
         .catch((err) => {
           setIsLoading(false);
@@ -106,6 +111,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
           setTimeout(() => {
             setIsRequestFinished(false);
           }, 4000);
+          fetchData();
         })
         .catch((err) => {
           setIsLoading(false);
@@ -128,6 +134,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
               setTimeout(() => {
                 setIsRequestFinished(false);
               }, 4000);
+              fetchData();
             })
             .catch((err) => {
               setIsLoading(false);
@@ -145,6 +152,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
               setIsRequestFinished(true);
               setIsError(false);
               setSuccessMessage("Uspješno ste dodali novi artikl!");
+              fetchData();
               setTimeout(() => {
                 setIsRequestFinished(false);
               }, 4000);
@@ -158,7 +166,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
           setIsLoading(false);
         }
           }    
-        fetchData();
+        
     },
   });
 

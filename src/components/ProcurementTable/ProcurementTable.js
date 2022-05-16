@@ -79,7 +79,7 @@ const ProcurementTable = ({
     <>
     {addPressed  && (
             <Modal title={"Nabava"} setModal={openAddModal}>
-              <ProcurementForm/>
+              <ProcurementForm fetchInitialData={fetchData}/>
             </Modal>
             )}
       {viewPressed  && (
@@ -110,6 +110,7 @@ const ProcurementTable = ({
                 <TableHead >Kreirano</TableHead>
                 <TableHead >Skladište</TableHead>
                 <TableHead >Pogledaj</TableHead>
+                <TableHead>PDF</TableHead>
               </TableRow>
             </THead>
             <TableBody>
@@ -132,7 +133,7 @@ const ProcurementTable = ({
                       size={25}
                       onClick={() =>
                         {
-                          getProcurementPdf(content.id, authToken)
+                          getProcurementPdf(content)
                         }}
                     />
                   </TableData>

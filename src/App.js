@@ -18,11 +18,15 @@ import Home from './pages/Home/Home';
 import Procurement from './pages/Procurement/Procurement';
 import Other from './pages/Other/Other';
 import Mount from './pages/Mount/Mount';
-
+import HamburgerMenu from './components/HamburgerMenu/HamburgerMenu';
 const App = () => {
-
+  const [hamburgerMenu, setHamburgerMenu] = useState(false);
   const { setIsLoggedIn, setIsAdmin, isAdmin, isLoggedIn } = useContext(AuthContext);
   const history = useHistory();
+
+  const openHamburgerMenu = () => {
+    setHamburgerMenu(!hamburgerMenu);
+  }
 
   useEffect(() => {
     setIsLoggedIn(localStorage.getItem("authToken") ? true : false);
@@ -42,12 +46,25 @@ const App = () => {
 
   return (
     <>
-    <Header
-      isLoggedIn={isLoggedIn}
+    {hamburgerMenu ?   
+      (<>
+        <Header 
+          setHamburgerMenu={openHamburgerMenu} 
+          isLoggedIn={isLoggedIn}
       onLogout={handleLogout}
       isAdmin={isAdmin}
-    />  
-    <Main>
+        />
+        <Main><HamburgerMenu setHamburgerMenu={openHamburgerMenu}/></Main>
+      </>) 
+      : (    
+        <>  
+          <Header 
+            setHamburgerMenu={openHamburgerMenu} 
+            isLoggedIn={isLoggedIn}
+      onLogout={handleLogout}
+      isAdmin={isAdmin}
+          />
+          <Main>
     <Router history={history}>
               <Switch>
                 {isLoggedIn ? (
@@ -77,7 +94,10 @@ const App = () => {
             </Router>
     </Main>
     </>
+      )}
 
+
+      </>
   );
 }
 

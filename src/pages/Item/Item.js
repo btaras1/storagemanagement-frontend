@@ -22,11 +22,21 @@ const Item = () => {
     const [refresh, setRefresh] = useState(false);
     const authToken = localStorage.getItem("authToken");
 
+
+  const handleChange = () => {
+    setRefresh(!refresh);
+  }
+
     const fetchData = async () => {
-      setRefresh(!refresh);
-      await getAllItems(authToken).then((items) => setDefaultData(items));
+      await getAllItems(authToken).then((items) => 
+      {
+        console.log("items");
+        console.log(items);
+        setDefaultData(items);
+        
+      });
       await getAllColors(authToken).then((items)=>setColorData(items));
-      updateView(option);
+      
     }
     const initialFetchData = async () => {
       await getAllItems(authToken).then((items) => setDefaultData(items));
@@ -43,6 +53,7 @@ const Item = () => {
         
         switch (selectOption) {
           case "DOOR":
+            console.log(defaultData);
             const doors = defaultData.filter((item) => {
               return item.itemType.value === "DOOR";
             });
@@ -69,6 +80,8 @@ const Item = () => {
             setData(motors);
             break;
           case "SUSPENSION":
+            console.log("AFTER");
+            console.log(defaultData);
               const suspensions = defaultData.filter((item) => {
                 return item.itemType.value === "SUSPENSION";
               });
@@ -104,9 +117,8 @@ const Item = () => {
       }, [option]);
 
       useEffect(() => {
-
-      }, [refresh]);
- 
+        updateView(option);
+      }, [defaultData]);
 
 
     return (
@@ -118,7 +130,8 @@ const Item = () => {
               isMotor={option === "MOTOR" ? true : false}
               type={option}
               passedItem={null}
-              fetchData={fetchData}
+              fetchData={handleChange}
+              refresh={refresh}
               />
             </Modal>
             )}
@@ -150,6 +163,8 @@ const Item = () => {
                     data = {data}
                     type = {option}
                     fetchData={fetchData}
+                    refresh={refresh}
+                    
                     />
                   ):(
                     <Section withoutTopPadding={true}>

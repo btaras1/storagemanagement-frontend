@@ -94,6 +94,7 @@ const openViewModal = (procurement) => {
         <Modal title={"Podaci o prodaji"} setModal={openAdModal}>
         <ReceiptMountForm
         passedItem={adItem}
+        fetchInitialData={fetchData}
         />
       </Modal>
       }
