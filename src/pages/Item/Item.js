@@ -9,6 +9,7 @@ import { OptionText } from "../../lib/style/generalStyles";
 import { AddButton } from "../../lib/style/generalStyles";
 import ItemForm from "../../components/ItemForm/ItemForm";
 import Modal from '../../components/Modal/Modal';
+import DataLoader from "../../components/DataLoader/DataLoader";
 
 const Item = () => {
 
@@ -18,10 +19,11 @@ const Item = () => {
     const [colorData, setColorData] = useState([]);
     const [option, setOption] = useState("");
     const [head, setHead] = useState([]);
-
+    const [refresh, setRefresh] = useState(false);
     const authToken = localStorage.getItem("authToken");
 
     const fetchData = async () => {
+      setRefresh(!refresh);
       await getAllItems(authToken).then((items) => setDefaultData(items));
       await getAllColors(authToken).then((items)=>setColorData(items));
       updateView(option);
@@ -86,12 +88,7 @@ const Item = () => {
       };
 
       useEffect(() => {
-        // declare the data fetching function
-        
-      
-        // call the function
         initialFetchData()
-          // make sure to catch any error
           .catch(console.error);
 
       }, [])
@@ -105,6 +102,10 @@ const Item = () => {
       useEffect(() => {
         updateView(option);
       }, [option]);
+
+      useEffect(() => {
+
+      }, [refresh]);
  
 
 
@@ -151,7 +152,9 @@ const Item = () => {
                     fetchData={fetchData}
                     />
                   ):(
-                    <h1>Bok</h1>
+                    <Section withoutTopPadding={true}>
+                    <DataLoader />
+                    </Section>
                   ) 
                   }
                 <AddButton

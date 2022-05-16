@@ -21,7 +21,7 @@ import DataLoader from "../DataLoader/DataLoader";
 import { addItem, getAllItems, updateItem } from "../../api/item";
 import { addColor, getAllColors, updateColor } from "../../api/color";
 import { getAllTypes } from "../../api/item-type";
-import { addToStorage, getAllStorages } from "../../api/storage";
+import {  getAllStorages } from "../../api/storage";
 
 const AddToStorageForm= ({isDoor,isMotor,type, passedItem,fetchData}) => {
 
@@ -69,23 +69,6 @@ const AddToStorageForm= ({isDoor,isMotor,type, passedItem,fetchData}) => {
 
      
 
-          addToStorage(addRequest, authToken)
-          .then((res) => {
-          resetForm({});
-          setIsLoading(false);
-          setIsRequestFinished(true);
-          setIsError(false);
-          setSuccessMessage("Uspješno ste dodali novi artikl!");
-          setTimeout(() => {
-            setIsRequestFinished(false);
-          }, 4000);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          setIsRequestFinished(true);
-          setIsError(true);
-          setSuccessMessage("Došlo je do greške!");
-        });
     },
   });
 

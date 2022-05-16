@@ -14,7 +14,7 @@ import {
   Title,
 } from "../Form/FormSyle";
 import { Button } from "../Button/ButtonStyle";
-import { SuccessMessage } from "../../lib/style/generalStyles";
+import { Border, SuccessMessage } from "../../lib/style/generalStyles";
 import DataLoader from "../DataLoader/DataLoader";
 
 
@@ -26,6 +26,8 @@ const ReceiptViewForm = ({item}) => {
     <>
     {item &&
         <Form>
+          <FormRow><InputLabel>Broj računa :</InputLabel>
+          <InputLabel>{`\xa0` + item.id}</InputLabel></FormRow>
         <FormRow>
             <LeftColumn>
           <FormRow>
@@ -43,31 +45,48 @@ const ReceiptViewForm = ({item}) => {
               <RightColumn><InputLabel>{item?.buyer?.mobile}</InputLabel></RightColumn>
           </FormRow>
           <FormRow>
-              <LeftColumn>Montirao : </LeftColumn>
-              <RightColumn><InputLabel>{item?.employee?.firstname + " " + item?.employee?.lastname}</InputLabel></RightColumn>
+              <LeftColumn>Opis : </LeftColumn>
+              <RightColumn><InputLabel>{item?.description}</InputLabel></RightColumn>
           </FormRow>
           </RightColumn>
           </FormRow>
-
-          {item && item.productReceipts.map((content) => (
+          <FormRow>
+            <InputLabel>Montirali :</InputLabel>
+            {item && item.employees.map((content, index) => (
             <>
-            <Title>Podaci o proizvodu</Title>
+            
+            {index + 1 === item.employees.length ? (<InputLabel key={index}>{`\xa0 ${content.firstname} \xa0 ${content.lastname}`}</InputLabel>)
+            :(
+              <InputLabel key={index}>{`\xa0 ${content.firstname} \xa0 ${content.lastname} ,`}</InputLabel>
+            )  
+          }
+            </>
+            ))}
+          </FormRow>
+        <FormRow>
+        <Title>Stavke :</Title>
+        </FormRow>
+          {item && item.itemReceipts.map((content) => (
+            <>
+            <Border>
               <FormRow>
-            <LeftColumn>Vrata :</LeftColumn>
-            <RightColumn><InputLabel>{content.product?.door?.value}</InputLabel></RightColumn>
+                
+            <LeftColumn>Naziv :</LeftColumn>
+            <RightColumn><InputLabel>{content?.item?.value}</InputLabel></RightColumn>
               </FormRow>
               <FormRow>
-              <LeftColumn>Vodilica :</LeftColumn>
-              <RightColumn><InputLabel>{content.product?.guide?.value}</InputLabel></RightColumn>
+              <LeftColumn>Opis :</LeftColumn>
+              <RightColumn><InputLabel>{content?.item?.description}</InputLabel></RightColumn>
                 </FormRow>
                 <FormRow>
-                <LeftColumn>Motor :</LeftColumn>
-                <RightColumn><InputLabel>{content.product?.motor?.value}</InputLabel></RightColumn>
-                  </FormRow>
-                  <FormRow>
                 <LeftColumn>Količina :</LeftColumn>
                 <RightColumn><InputLabel>{content?.quantity}</InputLabel></RightColumn>
                   </FormRow>
+                  <FormRow>
+                <LeftColumn>Količina :</LeftColumn>
+                <RightColumn><InputLabel>{content?.storage.name + '-' + content?.storage.location}</InputLabel></RightColumn>
+                  </FormRow>
+                  </Border>
             </>
           ))}
 

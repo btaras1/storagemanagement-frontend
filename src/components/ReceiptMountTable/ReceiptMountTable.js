@@ -19,9 +19,10 @@ import Modal from "../Modal/Modal";
 import { deleteColor } from "../../api/color";
 import { deleteItem } from "../../api/item";
 import ReceiptViewForm from "../ReceiptViewForm/ReceiptViewForm";
-import {HiOutlineViewList} from 'react-icons/hi'
+import {HiOutlineViewList, HiAdjustments} from 'react-icons/hi'
+import ReceiptMountForm from "../ReceiptMountForm/ReceiptMountForm";
 
-const ReceiptTable = ({
+const ReceiptMountTable = ({
   title,
   head,
   data,
@@ -36,7 +37,8 @@ const ReceiptTable = ({
   const [addPressed, setAddPressed] = useState(false);
   const [editPressed, setEditPressed] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [adjustmentsPressed, setAdjustmentsPressed] = useState(false);
+  const [adItem, setAdItem] = useState(null);
   const authToken = localStorage.getItem("authToken");
 
 
@@ -46,9 +48,19 @@ const openViewModal = (procurement) => {
     setViewPressed(!viewPressed);
   };
 
+  const openAdViewModal = (receipt) => {
+    setAdItem(receipt);
+    setAdjustmentsPressed(!adjustmentsPressed);
+  };
+
   const openModal = () => {
     setViewPressed(!viewPressed);
   };
+
+  const openAdModal = () => {
+    setAdjustmentsPressed(!adjustmentsPressed);
+  };
+
 
   const handleDelete = (id) => {
     if(type === "COLOR") {
@@ -78,6 +90,13 @@ const openViewModal = (procurement) => {
           />
         </Modal>
       }
+      {adjustmentsPressed &&
+        <Modal title={"Podaci o prodaji"} setModal={openAdModal}>
+        <ReceiptMountForm
+        passedItem={adItem}
+        />
+      </Modal>
+      }
 
       {data !== null && (
         <>
@@ -92,6 +111,7 @@ const openViewModal = (procurement) => {
              
                 <>
                 <TableHead >Prikaži</TableHead>
+                <TableHead>Postavi</TableHead>
                 </>
                 
               </TableRow>
@@ -114,6 +134,15 @@ const openViewModal = (procurement) => {
                         }}
                     />
                   </TableData>
+                  <TableData >
+                    <HiAdjustments
+                      size={25}
+                      onClick={() =>
+                        {
+                          openAdViewModal(content);
+                        }}
+                    />
+                  </TableData>
                 </TableRow>
               ))}
             </TableBody>
@@ -123,4 +152,4 @@ const openViewModal = (procurement) => {
     </>
   );
 };
-export default ReceiptTable;
+export default ReceiptMountTable;

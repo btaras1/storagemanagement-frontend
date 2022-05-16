@@ -14,6 +14,10 @@ import AddToStorageForm from "../../components/AddToStorageForm/AddToStorageForm
 import TransferBetweenStorageForm from "../../components/TransferBetweenStorageForm/TransferBetweenStorageForm";
 import { getAllReceipts } from "../../api/receipt";
 import ReceiptTable from "../../components/ReceiptTable/ReceiptTable";
+import ReceiptForm from "../../components/ReceiptForm/ReceiptForm";
+import DataLoader from "../../components/DataLoader/DataLoader";
+import SearchBar  from "../../components/SearchBar/SearchBar";
+import { LeftColumn, RightColumn } from "../../components/Form/FormSyle";
 
 
 const Receipt = () => {
@@ -24,21 +28,28 @@ const Receipt = () => {
     const [defaultData, setDefaultData] = useState([]);
     const [storageData, setStorageData] = useState([]);
     const [colorData, setColorData] = useState([]);
-    const [option, setOption] = useState("");
+    const [option, setOption] = useState("Broj");
     const [head, setHead] = useState([]);
     const [storageSelected, setStorageSelected] = useState(false);
     const [storage, setStorage] = useState(null);
-    const [storageOption, setStorageOption] = useState("")
+    const [storageOption, setStorageOption] = useState("");
+    const [input, setInput] = useState("");
   
     const authToken = localStorage.getItem("authToken");
 
     const fetchData = async () => {
-      await getAllReceipts(authToken).then((items) => setData(items));
+      await getAllReceipts(authToken).then((items) => {
+      setData(items);
+      setDefaultData(items);
+      });
       
       //updateView(option);
     }
     const initialFetchData = async () => {
-      await getAllReceipts(authToken).then((items) => setData(items));
+      await getAllReceipts(authToken).then((items) => {
+        setData(items);
+        setDefaultData(items);
+        });
      
       //setOption("-");
     }
@@ -55,94 +66,38 @@ const Receipt = () => {
       }
     }
 
-      const updateView = (selectOption) => {
-        
-       {/* if(storageSelected){
-          console.log("STORAGE TRUE");
-          switch (selectOption) {
-            case "-":
-              const setStorageA = storageData.filter(x => x.id === parseInt(storageOption));
-              setData(setStorageA);
-              setHead(["Naziv","Vrsta","Količina"]);
-              break;
-            case "DOOR":
-              const storageDataDoor = storageData;
-              const setStorageD = storageDataDoor.filter(x => x.id === parseInt(storageOption));
-              console.log("BEFORE")
-              console.log(setStorageD);
-              const doors = setStorageD.map(item =>{
-                return Object.assign({}, item,{
-                  itemStorages: item.itemStorages.filter((x) => x.item.itemType.value === "DOOR")
-                })
-              });
-              console.log("AFTER");
-              console.log(setStorageD);
-              setHead(["Naziv","Boja","Količina"]);
-              console.log("Door data");
-              console.log(doors);
-              setData(doors);
-      
-              break;
-            case "GUIDE":
-              const storageDataGuide = storageData;
-              const setStorageG = storageDataGuide.filter(x => x.id === parseInt(storageOption));
-              const guides = setStorageG.map(item =>{
-                return Object.assign({}, item,{
-                  itemStorages: item.itemStorages.filter((x) => x.item.itemType.value === "GUIDE")
-                })
-              });
-              setHead(["Naziv","Količina"]);
-              console.log("Guides data");
-              console.log(guides);
-              setData(guides);
-      
-              break;
-            case "MOTOR":
-              const storageDataMotor = storageData;
-              const setStorageM = storageDataMotor.filter(x => x.id === parseInt(storageOption));
-              const motors = setStorageM.map(item =>{
-                return Object.assign({}, item,{
-                  itemStorages: item.itemStorages.filter((x) => x.item.itemType.value === "MOTOR")
-                })
-              });
-              setHead(["Naziv", "Vodilica potrebna","Količina"]);
-              console.log("Motor data");
-              console.log(motors);
-              setData(motors);
-              break;
-        }
-        }
-        else if(!storageSelected){
-          console.log("STORAGE FALSE");
-        switch (selectOption) {
-          case "-":
-            setData(defaultData);
-            setHead(["Naziv","Vrsta","Količina"]);
-            break;
-          case "DOOR":
-            const doors = defaultData.filter((item) => {
-              return item.type === "DOOR";
-            });
-            setHead(["Naziv","Boja","Količina"]);
-            setData(doors);
-    
-            break;
-          case "GUIDE":
-            const guides = defaultData.filter((item) => {
-              return item.type === "GUIDE";
-            });
-            setHead(["Naziv","Količina"]);
-            setData(guides);
-    
-            break;
-          case "MOTOR":
-            const motors = defaultData.filter((item) => {
-              return item.type === "MOTOR";
-            });
-            setHead(["Naziv", "Vodilica potrebna","Količina"]);
-            setData(motors);
-            break;
-      }} */}
+    const updateInput = (input) => {
+      console.log(input);
+      switch (option) {
+        case "Broj":
+          const filteredReceiptsId = defaultData.filter((receipt) => {
+            console.log(receipt);
+            return receipt.id.toString().toLowerCase().includes(input.toLowerCase());
+          });
+          setInput(input);
+          setData(filteredReceiptsId);
+  
+          break;
+        case "Datum":
+          const filteredReceiptsDate = defaultData.filter((receipt) => {
+            console.log(receipt);
+            return receipt.sold.toString().toLowerCase().includes(input.toLowerCase());
+          });
+          setInput(input);
+          setData(filteredReceiptsDate);
+  
+          break;
+        case "Montirano":  
+        const filteredReceiptsMount = defaultData.filter((receipt) => {
+          console.log(receipt);
+          return receipt.mounted.toString().toLowerCase().includes(input.toLowerCase());
+        });
+        setInput(input);
+        setData(filteredReceiptsMount);
+
+        break;
+  
+      }
     };
 
       const openAddModal = () => {
@@ -163,15 +118,11 @@ const Receipt = () => {
 
       }, [])
 
-      {/*useEffect(() => {
-        getItems();
-        setData(defaultData);
-        updateView("Door");
-      }, []);*/}
-
       useEffect(() => {
-        updateView(option);
-      }, [option,storageOption]);
+        updateInput(input);
+      }, [input]);
+
+
  
 
 
@@ -179,12 +130,35 @@ const Receipt = () => {
         <>
           {addPressed  && (
             <Modal title={"Dodaj"} setModal={openAddModal}>
-              <AddToStorageForm
-              />
+              <ReceiptForm />
             </Modal>
             )}
             <Main>
                 <Section title={"Prodaja"} withoutTopPadding={false}>
+                <FormRow><InputLabel>Pretraži :</InputLabel></FormRow>
+      <FormRow>
+        
+        <LeftColumn>
+                <SelectText
+                  type="select"
+                  value={option}
+                  onChange={(e) => setOption(e.target.value)}
+                >
+              <OptionText value="Broj">Po broju dokumenta</OptionText>
+              <OptionText value="Datum">Po datumu dokumenta</OptionText>
+              <OptionText value="Montirano">Montirano</OptionText>
+            </SelectText>
+            </LeftColumn>
+            <RightColumn>
+              
+                <SearchBar
+                  input={input}
+                  setInput={setInput}
+                  isDisabled={false}
+                  placeholder={"Pretraži prodaje po odabranom filteru"}
+                />
+                </RightColumn>
+              </FormRow>
                 <FormRow>
              {/* <InputLabel>Skladište :</InputLabel>
               <SelectText
@@ -234,7 +208,7 @@ const Receipt = () => {
                   {data ? (
                     <ReceiptTable
                     title = {"Stanje"}
-                    head = {["Br.","Datum prodaje","Datum montiranja"]}
+                    head = {["Br.","Datum prodaje","Datum montiranja", "Kupac", "Grad"]}
                     data = {data}
                     type = {option}
                     fetchData={fetchData}
@@ -242,21 +216,17 @@ const Receipt = () => {
                     storageSelected={storageSelected}
                     />
                   ):(
-                    <h1>Bok</h1>
+                    <Section>
+                      <DataLoader />
+                    </Section>
                   ) 
                   }
-                {storageSelected &&
                 <FormRow>
                 <AddButton
                 onClick={() => openAddModal()}>
                 Dodaj
                 </AddButton>
-                <AddButton
-                onClick={() => openTransferModal()}>
-                Prebaci
-                </AddButton>
                 </FormRow>
-                }
                 
                 </Section>
             </Main>

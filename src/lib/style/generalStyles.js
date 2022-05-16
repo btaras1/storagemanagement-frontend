@@ -27,6 +27,12 @@ export const Main = styled.main`
   height: 100%;
 `;
 
+export const Border = styled.div`
+padding: 10px;
+margin-bottom: 10px;
+border-style: solid;
+`
+
 export const Form = styled.form`
   display: flex;
   flex-direction: column;

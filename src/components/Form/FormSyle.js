@@ -60,6 +60,7 @@ export const InputLabel = styled.label`
   }
 `;
 
+
 export const InputText = styled.input`
   border: 1px solid ${colors.lightGrey};
   border-radius: 6px;

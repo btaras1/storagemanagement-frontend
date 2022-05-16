@@ -12,12 +12,14 @@ import {
   TableHeadCenter
 } from "./TableStyle";
 import { FaTrash, FaEdit, FaPlusSquare, FaFilePdf } from "react-icons/fa";
+import {HiOutlineViewList} from 'react-icons/hi'
 import { useState } from "react/cjs/react.development";
 import { AddButton } from "../../lib/style/generalStyles";
 import ItemForm from "../ItemForm/ItemForm";
 import Modal from "../Modal/Modal";
 import { deleteColor } from "../../api/color";
 import { deleteItem } from "../../api/item";
+import ItemView from "../ItemView/ItemView";
 
 
 const SaleTable = ({
@@ -27,7 +29,8 @@ const SaleTable = ({
   type,
   fetchData,
   optionSelected,
-  storageSelected
+  storageSelected,
+  allSelected
 }) => {
   
   const [dog, setDog] = useState(null);
@@ -36,6 +39,14 @@ const SaleTable = ({
   const [selectedItem, setSelectedItem] = useState(null);
 
   const authToken = localStorage.getItem("authToken");
+
+  const [viewPressed, setViewPressed] = useState(false);
+  const [viewItem, setViewItem] = useState(null);
+  const [isItemStorage, setIsItemStorage] = useState(false);
+  const openViewModal = (item) => {
+    setViewItem(item);
+    setViewPressed(!viewPressed);
+  };
 
   const openModal = () => {
     setEditPressed(!editPressed);
@@ -62,16 +73,13 @@ const SaleTable = ({
 
   return (
     <>
-      {/*editPressed &&
-        <Modal title={"Artikl"} setModal={openModal}>
-          <ItemForm
-            isDoor={type === "DOOR" ? true : false }
-            isMotor={type === "MOTOR" ? true : false}
-            type={type}
-            passedItem={selectedItem}
-            fetchData={fetchData}
+      {viewPressed &&
+        <Modal title={"Artikl"} setModal={openViewModal}>
+          <ItemView
+            data={viewItem}
+            isItemStorage={isItemStorage}
           />
-        </Modal>*/
+        </Modal>
       }
 
       {data !== null && (
@@ -84,57 +92,103 @@ const SaleTable = ({
                     {title}
                   </TableHead>
                 ))}
-                {storageSelected && 
-                <>
-                <TableHead >Uredi</TableHead>
-                </>
-                }
+                <TableHead>Prikaži</TableHead>
               </TableRow>
             </THead>
             <TableBody>
-              {storageSelected && data?.map((storage) => (
-                storage?.itemStorages?.map((content) =>
-                <TableRow key={content.id}>
+              {storageSelected && type !== "-" && data?.map((storage) => (
+                storage?.itemStorages?.map((content, index) =>
+                <TableRow key={index}>
+                  {console.log("USAO")}
                    <TableData >{content?.item?.value}</TableData>
                   {content?.item?.guide_needed !== null && typeof(content?.item?.guide_needed) !== "undefined" &&
-                  <TableData >{content?.item?.guide_needed ? "DA" : "NE"}</TableData>
+                  <TableData >{content?.item?.guide_needed  ? "DA" : "NE"}</TableData>
                   }
                   {content.item?.color?.value &&
                   <TableData >{content.item?.color?.value}</TableData>
                   }
                   <TableData >{content.quantity ? content.quantity : 0}</TableData>
-
+                  <TableData >{content.notMountedQuantity ? content.notMountedQuantity : 0}</TableData>
+                  <TableData >{content.avaliableQuantity ? content.avaliableQuantity : 0}</TableData>
                   <TableData >
-                    <FaEdit
+                    <HiOutlineViewList
                       size={25}
                       onClick={() =>
                         {
-                          setSelectedItem(content);
-                          openModal();
-                        }
-                      
-                      }
+                          setIsItemStorage(true);
+                          openViewModal(content);
+                        }}
                     />
                   </TableData>
                 </TableRow>
               )))}
-                {!storageSelected && data.map((content) => (
-                <TableRow key={content.id}>
+              {storageSelected && type === "-" && data?.map((storage) => (
+                storage?.itemStorages?.map((content, index) =>
+                <TableRow key={index}>
+                  {console.log(content)}
+                    <>
+                    <TableData >{content?.item?.value}</TableData>                  
+                    <TableData >{content?.item?.itemType.value}</TableData> 
+                    <TableData>{content.quantity}</TableData>
+                    <TableData >{content.notMountedQuantity ? content.notMountedQuantity : 0}</TableData>
+                    <TableData >{content.avaliableQuantity ? content.avaliableQuantity : 0}</TableData>
+                    <TableData >
+                    <HiOutlineViewList
+                      size={25}
+                      onClick={() =>
+                        {
+                          setIsItemStorage(true);
+                          openViewModal(content);
+                        }}
+                    />
+                  </TableData>
+                    </>
+                </TableRow>
+              )))}
+                {!storageSelected && data.map((content, index) => (
+                  
+                <TableRow key={index}>
+                  {console.log(data)}
                   {optionSelected ? (
                     <>
-                    <TableData >{content.value}</TableData> 
-                    <TableData >{content.type}</TableData> 
+                  <TableData >{content?.value}</TableData>
+                  {content?.guideneeded !== null && typeof(content?.guideneeded) !== "undefined" &&
+                  <TableData >{content?.guideneeded  ? "DA" : "NE"}</TableData>
+                  }
+                  {content.color &&
+                  <TableData >{content.color}</TableData>
+                  }
+                  <TableData >{content.quantity ? content.quantity : 0}</TableData>
+                  <TableData >{content.notMountedQuantity ? content.notMountedQuantity : 0}</TableData>
+                  <TableData >{content.avaliableQuantity ? content.avaliableQuantity : 0}</TableData>
+                  <TableData >
+                    <HiOutlineViewList
+                      size={25}
+                      onClick={() =>
+                        {
+                          setIsItemStorage(false);
+                          openViewModal(content);
+                        }}
+                    />
+                  </TableData>
                     </>
                   ) : (
                     <>
                     <TableData >{content.value}</TableData>                  
-                    {content?.guideneeded !== null && typeof(content?.guideneeded) !== "undefined" &&
-                    <TableData >{content?.guideneeded ? "DA" : "NE"}</TableData>
-                    }
-                    {content?.color &&
-                    <TableData >{content?.color}</TableData>
-                    }
+                    <TableData >{content.type}</TableData> 
                     <TableData>{content.quantity}</TableData>
+                    <TableData >{content.notMountedQuantity ? content.notMountedQuantity : 0}</TableData>
+                    <TableData >{content.avaliableQuantity ? content.avaliableQuantity : 0}</TableData>
+                    <TableData >
+                    <HiOutlineViewList
+                      size={25}
+                      onClick={() =>
+                        {
+                          setIsItemStorage(false);
+                          openViewModal(content);
+                        }}
+                    />
+                  </TableData>
                     </>
                   )}
                    

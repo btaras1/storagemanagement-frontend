@@ -15,139 +15,86 @@ import {
 } from "../../components/Form/FormSyle";
 import { Button } from "../../components/Button/ButtonStyle";
 import { useState } from "react/cjs/react.development";
-import { addUser } from "../../api/user";
+import { addUser, getAllUsers } from "../../api/user";
 import { SuccessMessage } from "../../lib/style/generalStyles";
 import DataLoader from "../../components/DataLoader/DataLoader";
+import UserForm from "../../components/UserForm/UserForm";
+import { AddButton } from "../../lib/style/generalStyles";
 import Section
  from "../../components/Section/Section";
+import Modal from "../../components/Modal/Modal";
+import { Table as TableStyle, TableData, THead, TableRow, TableHead, TableBody } from "../../components/ItemTable/TableStyle";
+
+
 const UserManagement = (props) => {
   const authToken = localStorage.getItem("authToken");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isRequestFinished, setIsRequestFinished] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [addPressed, setAddPressed] = useState(false);
+  const [data, setData] = useState(null)
 
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      roles: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Korisničko ime je obavezno"),
-      email: Yup.string().required("Email mora biti unesen"),
-      password: Yup.string()
-        .min(6, "Lozinka mora biti minimalne duljine 6 znakova")
-        .required("Lozinka je obavezna"),
-      roles: Yup.string().required("Uloga je obavezna"),
-    }),
-    onSubmit: (values, { resetForm }) => {
-      setIsLoading(true);
-      setIsRequestFinished(false);
+  const initialFetchData = async () => {
+    await getAllUsers(authToken).then((items) => setData(items));
+   
+    //setOption("-");
+  }
 
-        const user = {
-          username: values.username,
-          email: values.email,
-          password: values.password,
-          roles: values.roles,
-        };
+  useEffect(() => {
+    // declare the data fetching function
+    
+  
+    // call the function
+    initialFetchData()
+      // make sure to catch any error
+      .catch(console.error);
 
-        addUser(user, authToken)
-          .then((res) => {
-            resetForm({});
-            setIsLoading(false);
-            setIsRequestFinished(true);
-            setIsError(false);
-            setSuccessMessage("Uspješno ste ažurirali podatke!");
-            setTimeout(() => {
-              setIsRequestFinished(false);
-            }, 4000);
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            setIsRequestFinished(true);
-            setIsError(true);
-            setSuccessMessage("Došlo je do greške!");
-          });
-        setIsLoading(false);
-    },
-  });
+  }, [])
 
-
+  const openModal= () => {
+    setAddPressed(!addPressed);
+  }
   return (
     <>
-      {!isLoading ? (
-          <Section title={"Dodavanje korisnika"}>
-        <Form onSubmit={formik.handleSubmit}>
-          <FormOneRow>
-            <InputLabel htmlFor="username">Korisničko ime</InputLabel>
-            <InputText
-              id="username"
-              type="text"
-              {...formik.getFieldProps("username")}
-            />
-            {formik.touched.username && formik.errors.username ? (
-              <InputError>{formik.errors.username}</InputError>
-            ) : null}
-          </FormOneRow>
-          <FormRow>
-            <LeftColumn>
-              <InputLabel htmlFor="password">Lozinka</InputLabel>
-              <InputText
-                id="password"
-                type="password"
-                {...formik.getFieldProps("password")}
+    {addPressed  && (
+            <Modal title={"Dodavanje korisnika"} setModal={openModal}>
+              <UserForm
               />
-              {formik.touched.password && formik.errors.password ? (
-                <InputError>{formik.errors.password}</InputError>
-              ) : null}
-            </LeftColumn>
-            <RightColumn></RightColumn>
-          </FormRow>
-          <FormRow>
-            <RightColumn>
-              <InputLabel htmlFor="active">E-mail</InputLabel>
-              <InputText
-                id="email"
-                type="email"
-                {...formik.getFieldProps("email")}
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <InputError>{formik.errors.email}</InputError>
-              ) : null}
-            </RightColumn>
-            <LeftColumn>
-              <InputLabel htmlFor="roles">Uloga</InputLabel>
-              <SelectText
-                id="roles"
-                type="select"
-                {...formik.getFieldProps("roles")}
-              >
-                <OptionText value="">--Odaberi--</OptionText>
-                <OptionText value={"admin"}>Admin</OptionText>
-                <OptionText value={"user"}>User</OptionText>
-              </SelectText>
-              {formik.touched.roles && formik.errors.roles ? (
-                <InputError>{formik.errors.roles}</InputError>
-              ) : null}
-            </LeftColumn>
-          </FormRow>
-          <FormRow>
-            <Button type="submit">Dodaj</Button>
-          </FormRow>
-          {isRequestFinished && (
-            <FormRow>
-              <SuccessMessage isError={isError}>
-                {successMessage}
-              </SuccessMessage>
-            </FormRow>
-          )}
-        </Form>
-        </Section>
-      ) : (
-        <DataLoader />
-      )}
+            </Modal>
+            )}
+          {data ? (
+          <>
+          <Section title={"Korisnici"}>
+            <TableStyle>
+              <THead>
+                <TableRow>
+                    <TableHead>Korisničko ime</TableHead>
+                    <TableHead>Izrađen</TableHead>
+                    <TableHead>Prava</TableHead>
+                </TableRow>
+              </THead>
+              <TableBody>
+                {data.map((content) => (
+                  <TableRow>
+                    <TableData>{content.username}</TableData>
+                    <TableData>{content.created}</TableData>
+                    {content.roles.map((role) => 
+                      <TableData>{role.name}</TableData>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </TableStyle>
+            <AddButton
+                onClick={() => openModal()}>
+                Dodaj
+                </AddButton>
+                </Section>
+          </>
+        ) : (
+          <Section title="LOADING..." />
+        )}
     </>
   );
 };

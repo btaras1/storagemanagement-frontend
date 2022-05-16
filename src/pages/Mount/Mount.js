@@ -12,11 +12,14 @@ import Modal from '../../components/Modal/Modal';
 import { getAllItemsInStorages, getAllStorages, getStorage } from "../../api/storage";
 import AddToStorageForm from "../../components/AddToStorageForm/AddToStorageForm";
 import TransferBetweenStorageForm from "../../components/TransferBetweenStorageForm/TransferBetweenStorageForm";
+import { getAllReceiptsNotMounted } from "../../api/receipt";
+import ReceiptTable from "../../components/ReceiptTable/ReceiptTable";
+import ReceiptForm from "../../components/ReceiptForm/ReceiptForm";
 import DataLoader from "../../components/DataLoader/DataLoader";
-import  SearchBar  from "../../components/SearchBar/SearchBar";
+import ReceiptMountTable from "../../components/ReceiptMountTable/ReceiptMountTable";
 
 
-const Sale = () => {
+const Mount = () => {
 
     const [data, setData] = useState(null);
     const [addPressed, setAddPressed] = useState(false);
@@ -29,23 +32,22 @@ const Sale = () => {
     const [storageSelected, setStorageSelected] = useState(false);
     const [storage, setStorage] = useState(null);
     const [storageOption, setStorageOption] = useState("")
-    const [allSelected, setAllSelected] = useState(true);
-    const [input, setInput] = useState("");
-    const [reservedData, setReservedData] = useState([]);
+  
     const authToken = localStorage.getItem("authToken");
 
     const fetchData = async () => {
-      await getAllItemsInStorages(authToken).then((items) => setDefaultData(items));
-      await getAllStorages(authToken).then((items) => {
-      setStorageData(items);
-      });
-      updateView(option);
+      await getAllReceiptsNotMounted(authToken).then((items) => setData(items));
+      
+      //updateView(option);
     }
     const initialFetchData = async () => {
-      await getAllItemsInStorages(authToken).then((items) => setDefaultData(items));
-      await getAllStorages(authToken).then((items) => setStorageData(items));
-      setOption("-");
-      setStorageOption("-")
+      await getAllReceiptsNotMounted(authToken).then((items) => setData(items));
+     
+      //setOption("-");
+    }
+
+    const handleStorageOptionChange = (e) => {
+        console.log("handle");
     }
 
     const fetchStorage = async (id) =>{
@@ -56,43 +58,17 @@ const Sale = () => {
       }
     }
 
-    const updateInput = (input) => {
-      if(storageSelected){
-        const search = reservedData.map(item =>{
-          return Object.assign({}, item,{
-            itemStorages: item.itemStorages.filter((x) => {
-              return x.item.value.toLowerCase().includes(input.toLowerCase())
-            })
-              })
-          });
-        setInput(input);
-        setData(search);
-      }
-      else if(!storageSelected){
-        const filteredItems = reservedData.filter((item) => {
-          return item.value.toLowerCase().includes(input.toLowerCase());
-        });
-        setInput(input);
-        console.log(filteredItems);
-        setData(filteredItems);
-      }
-          
-    };
-
       const updateView = (selectOption) => {
         
-        if(storageSelected){
+       {/* if(storageSelected){
           console.log("STORAGE TRUE");
           switch (selectOption) {
             case "-":
-              setAllSelected(true);
               const setStorageA = storageData.filter(x => x.id === parseInt(storageOption));
               setData(setStorageA);
-              setReservedData(setStorageA);
-              setHead(["Naziv","Vrsta","Ukupno","Rezervirano","Dostupno"]);
+              setHead(["Naziv","Vrsta","Količina"]);
               break;
             case "DOOR":
-              setAllSelected(false);
               const storageDataDoor = storageData;
               const setStorageD = storageDataDoor.filter(x => x.id === parseInt(storageOption));
               console.log("BEFORE")
@@ -104,15 +80,13 @@ const Sale = () => {
               });
               console.log("AFTER");
               console.log(setStorageD);
-              setHead(["Naziv","Boja","Ukupno","Rezervirano","Dostupno"]);
+              setHead(["Naziv","Boja","Količina"]);
               console.log("Door data");
               console.log(doors);
               setData(doors);
-              setReservedData(doors);
       
               break;
             case "GUIDE":
-              setAllSelected(false);
               const storageDataGuide = storageData;
               const setStorageG = storageDataGuide.filter(x => x.id === parseInt(storageOption));
               const guides = setStorageG.map(item =>{
@@ -120,31 +94,13 @@ const Sale = () => {
                   itemStorages: item.itemStorages.filter((x) => x.item.itemType.value === "GUIDE")
                 })
               });
-              setHead(["Naziv","Ukupno","Rezervirano","Dostupno"]);
+              setHead(["Naziv","Količina"]);
               console.log("Guides data");
               console.log(guides);
               setData(guides);
-              setReservedData(guides);
-      
-              break;
-              case "SUSPENSION":
-              setAllSelected(false);
-              const storageDataSuspension = storageData;
-              const setStorageS = storageDataSuspension.filter(x => x.id === parseInt(storageOption));
-              const suspensions = setStorageS.map(item =>{
-                return Object.assign({}, item,{
-                  itemStorages: item.itemStorages.filter((x) => x.item.itemType.value === "SUSPENSION")
-                })
-              });
-              setHead(["Naziv","Ukupno","Rezervirano","Dostupno"]);
-              console.log("Suspensions data");
-              console.log(suspensions);
-              setData(suspensions);
-              setReservedData(suspensions);
       
               break;
             case "MOTOR":
-              setAllSelected(false);
               const storageDataMotor = storageData;
               const setStorageM = storageDataMotor.filter(x => x.id === parseInt(storageOption));
               const motors = setStorageM.map(item =>{
@@ -152,11 +108,10 @@ const Sale = () => {
                   itemStorages: item.itemStorages.filter((x) => x.item.itemType.value === "MOTOR")
                 })
               });
-              setHead(["Naziv", "Vodilica potrebna","Ukupno","Rezervirano","Dostupno"]);
+              setHead(["Naziv", "Vodilica potrebna","Količina"]);
               console.log("Motor data");
               console.log(motors);
               setData(motors);
-              setReservedData(motors);
               break;
         }
         }
@@ -164,51 +119,33 @@ const Sale = () => {
           console.log("STORAGE FALSE");
         switch (selectOption) {
           case "-":
-            setAllSelected(true);
             setData(defaultData);
-            setReservedData(defaultData);
-            setHead(["Naziv","Vrsta","Ukupno","Rezervirano","Dostupno"]);
+            setHead(["Naziv","Vrsta","Količina"]);
             break;
           case "DOOR":
             const doors = defaultData.filter((item) => {
               return item.type === "DOOR";
             });
-            setAllSelected(false);
-            setHead(["Naziv","Boja","Ukupno","Rezervirano","Dostupno"]);
+            setHead(["Naziv","Boja","Količina"]);
             setData(doors);
-            setReservedData(doors);
     
             break;
           case "GUIDE":
-            setAllSelected(false);
             const guides = defaultData.filter((item) => {
               return item.type === "GUIDE";
             });
-            setHead(["Naziv","Ukupno","Rezervirano","Dostupno"]);
+            setHead(["Naziv","Količina"]);
             setData(guides);
-            setReservedData(guides);
-    
-            break;
-            case "SUSPENSION":
-            setAllSelected(false);
-            const suspensions = defaultData.filter((item) => {
-              return item.type === "SUSPENSION";
-            });
-            setHead(["Naziv","Ukupno","Rezervirano","Dostupno"]);
-            setData(suspensions);
-            setReservedData(suspensions);
     
             break;
           case "MOTOR":
-            setAllSelected(false);
             const motors = defaultData.filter((item) => {
               return item.type === "MOTOR";
             });
-            setHead(["Naziv", "Vodilica potrebna","Ukupno","Rezervirano","Dostupno"]);
+            setHead(["Naziv", "Vodilica potrebna","Količina"]);
             setData(motors);
-            setReservedData(motors);
             break;
-      }}
+      }} */}
     };
 
       const openAddModal = () => {
@@ -237,12 +174,7 @@ const Sale = () => {
 
       useEffect(() => {
         updateView(option);
-        console.log(data);
       }, [option,storageOption]);
-
-      useEffect(() => {
-
-      }, [input]);
  
 
 
@@ -250,20 +182,13 @@ const Sale = () => {
         <>
           {addPressed  && (
             <Modal title={"Dodaj"} setModal={openAddModal}>
-              <AddToStorageForm
-              />
-            </Modal>
-            )}
-            {transferPressed  && (
-            <Modal title={"Prebaci"} setModal={openTransferModal}>
-              <TransferBetweenStorageForm
-              />
+              <ReceiptForm />
             </Modal>
             )}
             <Main>
-                <Section title={"Stanje"} withoutTopPadding={false}>
+                <Section title={"Montaže"} withoutTopPadding={false}>
                 <FormRow>
-              <InputLabel>Skladište :</InputLabel>
+             {/* <InputLabel>Skladište :</InputLabel>
               <SelectText
               type="select"
               value={storageOption}
@@ -271,11 +196,11 @@ const Sale = () => {
                console.log(e.target.value === "-");
                 if(e.target.value === "-") {
                   setStorageSelected(false);
-                  console.log("IF");
                 }
                 else {
+                  handleStorageOptionChange(e.target.value);
                   setStorageSelected(true);
-                  console.log("ELSE");
+                  console.log("ODMAH UDEM");
                 }
                 setStorageOption(e.target.value);
                 }
@@ -306,39 +231,35 @@ const Sale = () => {
               <OptionText value="DOOR">Vrata</OptionText>
               <OptionText value="GUIDE">Vodilice</OptionText>
               <OptionText value="MOTOR">Motori</OptionText>
-              <OptionText value="SUSPENSION">Ovjesi</OptionText>
-            </SelectText>
-              </FormRow>
-              <FormRow>
-                <InputLabel>Pretraži po nazivu :</InputLabel>
-                <SearchBar
-                  input={input}
-                  setInput={updateInput}
-                  isDisabled={false}
-                  placeholder={"Pretraži artikle prema nazivu"}
-                />
+            </SelectText>*/}
               </FormRow>
                   {data ? (
-                    <SaleTable
+                    <ReceiptMountTable
                     title = {"Stanje"}
-                    head = {head}
+                    head = {["Br.","Datum prodaje","Datum montiranja", "Kupac", "Grad"]}
                     data = {data}
                     type = {option}
-                    allSelected = {allSelected}
                     fetchData={fetchData}
-                    optionSelected={option != "-"}
+                    optionSelected={false}
                     storageSelected={storageSelected}
                     />
                   ):(
-                    <Section withoutTopPadding={true}>
-                    <DataLoader />
+                    <Section>
+                      <DataLoader />
                     </Section>
                   ) 
                   }
+                <FormRow>
+                <AddButton
+                onClick={() => openAddModal()}>
+                Dodaj
+                </AddButton>
+                </FormRow>
+                
                 </Section>
             </Main>
         </>
     );
 }
 
-export default Sale;
+export default Mount;

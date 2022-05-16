@@ -13,6 +13,7 @@ import {
   LeftColumn,
   FormOneRow,
   InputCheckbox,
+  TextArea,
 } from "../Form/FormSyle";
 import { Button } from "../Button/ButtonStyle";
 import { useState } from "react/cjs/react.development";
@@ -49,6 +50,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
     initialValues: {
       id: "",
       value: "",
+      description: "",
       guide_needed: "",
       itemType: "",
       color: "",
@@ -63,6 +65,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
       console.log(setType);
       const item = {
         value: values.value,
+        description: values.description,
         guide_needed: values.guide_needed,
         itemType: setType,
         color: JSON.parse(values.color),
@@ -167,19 +170,24 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
         case "DOOR":
           formik.setFieldValue("value", passedItem["value"], false);
           formik.setFieldValue("color", JSON.stringify(passedItem["color"]), false);
+          formik.setFieldValue("description", passedItem["description"], false);
           break;
         case "GUIDE":
           formik.setFieldValue("value", passedItem["value"], false);
+          formik.setFieldValue("description", passedItem["description"], false);
           break;
         case "SUSPENSION":
             formik.setFieldValue("value", passedItem["value"], false);
+            formik.setFieldValue("description", passedItem["description"], false);
             break;
         case "MOTOR":
           formik.setFieldValue("value", passedItem["value"], false);
           formik.setFieldValue("guide_needed", passedItem["guide_needed"], false);
+          formik.setFieldValue("description", passedItem["description"], false);
             break;
         case "COLOR":
           formik.setFieldValue("value", passedItem["value"], false);
+          formik.setFieldValue("description", passedItem["description"], false);
             break;    
       }
     }
@@ -200,6 +208,18 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
             {formik.touched.value && formik.errors.value ? (
               <InputError>{formik.errors.value}</InputError>
             ) : null}
+          </FormOneRow>
+          <FormOneRow>
+            <InputLabel htmlFor="description">Opis</InputLabel>
+            <TextArea
+            id="description"
+            type="text"
+            {...formik.getFieldProps("description")}
+            />
+            {formik.touched.description && formik.errors.description ? (
+              <InputError>{formik.errors.description}</InputError>
+            ) : null}
+            
           </FormOneRow>
           {isMotor &&
           <FormOneRow>
@@ -239,7 +259,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData}) => {
           </FormRow>
           }
           <FormRow>
-            <Button type="submit">Dodaj</Button>
+            <Button type="submit">{passedItem != null ? ('Ažuriraj') : ('Dodaj')}</Button>
           </FormRow>
 
           {isRequestFinished && (

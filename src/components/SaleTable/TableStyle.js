@@ -27,7 +27,7 @@ export const PuppyTable = styled.table`
   box-shadow: ${boxShadowHover};
 `;
 export const THead = styled.thead`
-  background-color: ${colors.red};
+  background-color: ${colors.blue};
   width: 100%;
 `;
 

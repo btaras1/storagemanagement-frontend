@@ -11,10 +11,10 @@ export const Table = styled.table`
   margin: 25px auto;
   table-layout: fixed;
   white-space: nowrap;
-  max-width: 100%;
-  border-radius: 15px;
+  width: 100%;
+  border-radius: 5px;
   overflow: hidden;
-  box-shadow: ${boxShadowHover};
+  border: 2px solid;
 `;
 export const PuppyTable = styled.table`
   border-collapse: collapse;
@@ -29,13 +29,16 @@ export const PuppyTable = styled.table`
 export const THead = styled.thead`
   background-color: ${colors.blue};
   width: 100%;
+  border: 2px solid;
 `;
 
 export const TableBody = styled.tbody`
   width: 100%;
+  border: 2px solid;
 `;
 export const TableRow = styled.tr`
   width: 100%;
+  border: 1px solid;
   :nth-of-type(even) {
     background-color: #f8f8f8;
   }
@@ -154,9 +157,11 @@ export const TableHeadCenter = styled.th`
 
 export const TableData = styled.td`
   padding: 12px 15px;
+  border: 2px solid;
   line-height: 40px;
   width: 15%;
   text-align: center;
+  overflow: auto;
   :nth-child(1){
     text-align:left;
   }

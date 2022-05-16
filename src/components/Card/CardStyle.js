@@ -70,7 +70,7 @@ export const Value = styled.p`
       font-size: 48px;
       color: ${colors.white};
       border-radius: 50%;
-      background-color: ${colors.red};
+      background-color: ${colors.blue};
       width: 100px;
       height: 100px;
     `}

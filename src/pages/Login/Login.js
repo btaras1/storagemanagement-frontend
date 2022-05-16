@@ -67,7 +67,7 @@ const Login = () => {
           history.push("/");
         }, 100);
       } catch (error) {
-        console.log(error);
+        alert(error);
         setIsError(true);
         setIsLoading(false);
         setIsRequestFinished(true);

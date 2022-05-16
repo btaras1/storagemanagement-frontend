@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import Section from "../../components/Section/Section";
 import { getAllBuyers, getAllBuyersDetail } from "../../api/buyer";
+import BuyerModal from "../../components/BuyerModal/BuyerModal"
+import ReceiptViewForm from "../../components/ReceiptViewForm/ReceiptViewForm";
+import {HiOutlineViewList} from 'react-icons/hi'
 import SearchBar from "../../components/SearchBar/SearchBar";
 import {
   Table as TableStyle,
@@ -17,6 +20,7 @@ import {
   RightColumn,
   LeftColumn,
 } from "../../components/Form/FormSyle";
+import { Title } from "../../components/Section/SectionStyle";
 
 const Buyers = () => {
   const authToken = localStorage.getItem("authToken");
@@ -31,6 +35,18 @@ const Buyers = () => {
     "Grad",
     "Mobitel"
   ];
+
+  const [viewPressed ,setViewPressed] = useState(false);
+  const [viewItem, setViewItem] = useState(null);
+const openViewModal = (procurement) => {
+    setViewItem(procurement);
+    setViewPressed(!viewPressed);
+  };
+
+  const openModal = () => {
+    setViewPressed(!viewPressed);
+  };
+
 
   async function getBuyers() {
     getAllBuyers(authToken).then(function (items) {
@@ -67,6 +83,22 @@ const Buyers = () => {
   };
   return (
     <>
+    {viewPressed &&
+        <BuyerModal title={"Podaci o prodaji"} setModal={openModal}>
+          {viewItem.map((content) =>
+          <>
+          {console.log(content)}
+          <FormRow>
+            
+            <Title>{`Datum računa : \xa0 ` + content.sold}</Title>
+          <ReceiptViewForm
+          item={content}
+          />
+          </FormRow>
+          </>
+          )}
+        </BuyerModal>
+      }
       <Section title="KUPCI">
         <FormRow>
           <LeftColumn>
@@ -96,6 +128,7 @@ const Buyers = () => {
                   {head.map((title) => (
                     <TableHead>{title}</TableHead>
                   ))}
+                  <TableHead>Pogledaj račune</TableHead>
                 </TableRow>
               </THead>
               <TableBody>
@@ -103,9 +136,18 @@ const Buyers = () => {
                   <TableRow>
                     <TableData>{content.firstname}</TableData>
                     <TableData>{content.lastname}</TableData>
-                    <TableData>{content.adress}</TableData>
+                    <TableData>{content.address}</TableData>
                     <TableData>{content.city}</TableData>
                     <TableData>{content.mobile}</TableData>
+                    <TableData >
+                    <HiOutlineViewList
+                      size={25}
+                      onClick={() =>
+                        {
+                          openViewModal(content?.receipts);
+                        }}
+                    />
+                  </TableData>
                   </TableRow>
                 ))}
               </TableBody>

@@ -9,8 +9,8 @@ const DataLoader = () => {
         alignItems: "center",
         justifyContent: "center",
       }}
-      /*type="TailSpin"*/
-      color={colors.yellow}
+      type="TailSpin"
+      color={colors.blue}
       height={100}
       width={100}
     />

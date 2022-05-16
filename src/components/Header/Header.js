@@ -34,8 +34,10 @@ const Header = (props) => {
                 <NavItem to="/sales"> Stanje </NavItem>
                 <NavItem to="/procurement"> Nabava </NavItem>
                 <NavItem to="/receipts"> Prodaja </NavItem>
+                <NavItem to="/mount"> Montaže </NavItem>
                 <NavItem to="/buyers"> Kupci </NavItem>
-                <NavItem to="/management"> Upravljanje korisnicima </NavItem>
+                <NavItem to="/other"> Ostalo </NavItem>
+                <NavItem to="/management"> Korisnici </NavItem>
                 {props.isAdmin && <NavItem to="/users">Korisnici</NavItem>}
                 <NavItem to="/logout" onClick={() => props.onLogout()}>
                   Odjava

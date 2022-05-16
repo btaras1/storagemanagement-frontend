@@ -36,14 +36,14 @@ export const getAllItemsInStorages = async (authToken) => {
       }).then((res) => res.json());
   };
 
-  export const addToStorage = async (addReq, authToken) =>{
-    return await fetch(`${apiOrigin}/storage/add`, {
+  export const addStorage = async (storage, authToken) =>{
+    return await fetch(`${apiOrigin}/storage/`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + authToken,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(addReq)
+        body: JSON.stringify(storage)
       }).then((res) => res.json());
   };
 
