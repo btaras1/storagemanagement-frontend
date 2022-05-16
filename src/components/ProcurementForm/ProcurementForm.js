@@ -234,7 +234,7 @@ const ProcurementForm = ({fetchInitialData}) => {
               <OptionText value={null}>--Odaberi--</OptionText>
               {items?.map((item) => (
                 <OptionText key={item.id} value={item.id}>
-                  {item.value}
+                  {item.itemType.value === "DOOR" ? (item.value + '-' + item.color.value) : (item.value )}
                 </OptionText>)
               )}
               </SelectText>
@@ -307,7 +307,7 @@ const ProcurementForm = ({fetchInitialData}) => {
                           <TableBody>
                           {formik.values.itemProcurements.map((itemProcurement, index) => (
                               <TableRow key={index}>
-                              <TableData>{itemProcurement.item.value}</TableData>
+                              <TableData>{itemProcurement.item.itemType.value === "DOOR" ? (itemProcurement.item.value + '-' + itemProcurement.item.color.value) : (itemProcurement.item.value )}</TableData>
                               <TableData>{itemProcurement.quantity}</TableData>
                               <TableData >
                                 <FaTrash
