@@ -1,3 +1,3 @@
-const apiOrigin ='https://storage-backend-example.herokuapp.com/api';
+const apiOrigin ='http://localhost:8080/api'
 
 export default apiOrigin;

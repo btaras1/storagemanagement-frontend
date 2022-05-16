@@ -142,7 +142,6 @@ const ProcurementForm = ({fetchInitialData}) => {
         storage: JSON.parse(values.storage),
         itemProcurements: values.itemProcurements
       };
-      alert(procurement);
       console.log(procurement);
           addProcurement(procurement, authToken)
             .then((res) => {

@@ -38,9 +38,11 @@ const Receipt = () => {
     const authToken = localStorage.getItem("authToken");
 
     const fetchData = async () => {
+      console.log("fetch")
       setDefaultData(null);
       setData(null);
       await getAllReceipts(authToken).then((items) => {
+        console.log(items);
         setDefaultData(items);
         setData(items);
       });
@@ -133,9 +135,10 @@ const Receipt = () => {
       }, [input]);
 
       useEffect(() => {
-        updateInput(input);
-      }, [defaultData]);
+        
+      }, [data]);
 
+      
 
  
 

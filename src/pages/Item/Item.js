@@ -120,6 +120,10 @@ const Item = () => {
         updateView(option);
       }, [defaultData]);
 
+      useEffect(() => {
+        updateView(option);
+      }, [colorData]);
+
 
     return (
         <>

@@ -65,7 +65,7 @@ const ItemForm = ({isDoor,isMotor,type, passedItem,fetchData, refresh}) => {
       setIsRequestFinished(false);
       const setType = types.find((item) => {return item.value === type});
       console.log(setType);
-      const currentColor = setType.value === 'DOOR' ? (JSON.parse(values.color)) : null;
+      const currentColor = type === 'DOOR' ? (JSON.parse(values.color)) : null;
       const item = {
         value: values.value,
         description: values.description,

@@ -170,7 +170,6 @@ const ReceiptForm = ({fetchInitialData}) => {
 
 
     onSubmit: (values, { resetForm }) => {
-        alert(values);
         console.log(values);
         if(buyerOption == "NEW"){
             const newReceipt = {
@@ -186,7 +185,10 @@ const ReceiptForm = ({fetchInitialData}) => {
                 }
             }
             console.log(newReceipt);
-            addPReceipt(newReceipt, authToken).then((response) => console.log(response));
+            addPReceipt(newReceipt, authToken).then((response) => {
+              resetForm({});
+            console.log(response)
+        });
             fetchInitialData();
         }
         if(buyerOption == "EXISTING"){
