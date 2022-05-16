@@ -18,3 +18,13 @@ export const addProcurement = async (procurement, authToken) => {
       },
     }).then((res) => res.json());
   };
+
+  export const getProcurementPdf = async (id, authToken) => {
+    return await fetch(`${apiOrigin}/procurement/pdf/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authToken,
+        "Content-Type": "application/json"
+      }
+    }).then((res) => res.json());
+  };

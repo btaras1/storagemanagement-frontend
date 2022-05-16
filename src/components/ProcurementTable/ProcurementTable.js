@@ -12,7 +12,7 @@ import {
   TableHeadCenter
 } from "../SaleTable/TableStyle";
 import { FaTrash, FaEdit, FaPlusSquare, FaFilePdf} from "react-icons/fa";
-import {HiOutlineViewList} from 'react-icons/hi'
+import {HiOutlineViewList, HiDocumentText} from 'react-icons/hi'
 import { useState } from "react/cjs/react.development";
 import { AddButton } from "../../lib/style/generalStyles";
 import ItemForm from "../ItemForm/ItemForm";
@@ -21,6 +21,7 @@ import { deleteColor } from "../../api/color";
 import { deleteItem } from "../../api/item";
 import ProcurementForm from "../ProcurementForm/ProcurementForm";
 import ProcurementView from "../ProcurementView/ProcurementView";
+import { getProcurementPdf } from "../../api/procurement";
 
 
 const ProcurementTable = ({
@@ -123,6 +124,15 @@ const ProcurementTable = ({
                       onClick={() =>
                         {
                           openViewModal(content);
+                        }}
+                    />
+                  </TableData>
+                  <TableData >
+                    <HiDocumentText
+                      size={25}
+                      onClick={() =>
+                        {
+                          getProcurementPdf(content.id, authToken)
                         }}
                     />
                   </TableData>

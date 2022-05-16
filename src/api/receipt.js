@@ -61,3 +61,13 @@ export const getAllReceipts = async (authToken) => {
       body: JSON.stringify(requestDto)
     }).then((res) => res.json());
   };
+
+  export const getReceiptPdf = async (id, authToken) => {
+    return await fetch(`${apiOrigin}/receipt/pdf/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authToken,
+        "Content-Type": "application/json"
+      }
+    }).then((res) => res.json());
+  };

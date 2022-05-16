@@ -19,7 +19,8 @@ import Modal from "../Modal/Modal";
 import { deleteColor } from "../../api/color";
 import { deleteItem } from "../../api/item";
 import ReceiptViewForm from "../ReceiptViewForm/ReceiptViewForm";
-import {HiOutlineViewList} from 'react-icons/hi'
+import {HiOutlineViewList, HiDocumentText} from 'react-icons/hi'
+import { getReceiptPdf } from "../../api/receipt";
 
 const ReceiptTable = ({
   title,
@@ -92,6 +93,7 @@ const openViewModal = (procurement) => {
              
                 <>
                 <TableHead >Prikaži</TableHead>
+                <TableHead >PDF</TableHead>
                 </>
                 
               </TableRow>
@@ -111,6 +113,15 @@ const openViewModal = (procurement) => {
                       onClick={() =>
                         {
                           openViewModal(content);
+                        }}
+                    />
+                  </TableData>
+                  <TableData >
+                    <HiDocumentText
+                      size={25}
+                      onClick={() =>
+                        {
+                          getReceiptPdf(content.id, authToken)
                         }}
                     />
                   </TableData>

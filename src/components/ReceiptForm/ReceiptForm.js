@@ -175,6 +175,7 @@ const ReceiptForm = () => {
         if(buyerOption == "NEW"){
             const newReceipt = {
                 sold: values.sold,
+                description: values.description,
                 itemReceipts: values.itemReceipts,
                 buyer: {
                     firstname: values.firstname,
@@ -190,6 +191,7 @@ const ReceiptForm = () => {
         if(buyerOption == "EXISTING"){
             const newReceipt = {
                 sold: values.sold,
+                description: values.description,
                 itemReceipts: values.itemReceipts,
                 buyer: selectedBuyer
             }
