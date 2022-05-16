@@ -69,5 +69,5 @@ export const getAllReceipts = async (authToken) => {
         Authorization: "Bearer " + authToken,
         "Content-Type": "application/json"
       }
-    }).then((res) => res.json());
+    });
   };
