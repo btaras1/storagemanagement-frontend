@@ -43,7 +43,7 @@ const initialFetchData = async () => {
       case "Broj":
         const filteredProcurementsId = reservedData.filter((procurement) => {
           console.log(procurement);
-          return procurement.id.toString().toLowerCase().includes(input.toLowerCase());
+          return procurement?.documentId?.toString().toLowerCase().includes(input.toLowerCase());
         });
         setInput(input);
         setData(filteredProcurementsId);

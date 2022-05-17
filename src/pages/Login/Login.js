@@ -51,8 +51,10 @@ const Login = () => {
         const users = await getAllUsers(response.accessToken);
         const isAdmin = users
           .find((user) => user.username === values.username)
-          .roles.includes("ADMIN");
-        console.log(isAdmin);
+          .roles.map((role) => {return role.name === "ROLE_ADMIN"});
+          console.log(users);
+          
+        console.log("JEL ADMIN" + isAdmin);
 
         userLogin(response.accessToken, isAdmin);
         resetForm({});

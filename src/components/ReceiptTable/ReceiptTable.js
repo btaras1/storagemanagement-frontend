@@ -103,7 +103,7 @@ const openViewModal = (procurement) => {
             <TableBody>
               {data?.map((content) => (
                 <TableRow key={content.id}>
-                   <TableData >{content?.id}</TableData>
+                   <TableData >{content.documentId != null ? (content.documentId):(content?.id)}</TableData>
                    <TableData >{content?.sold}</TableData>
                    <TableData >{content?.mountedDate ? content.mountedDate : "-"}</TableData>
                    <TableData >{content?.buyer ? (content.buyer.firstname + " " + content.buyer.lastname) : "-"}</TableData>

@@ -116,7 +116,7 @@ const ProcurementTable = ({
             <TableBody>
               {data?.map((content) => 
                 <TableRow key={content.id}>
-                   <TableData >{content?.id}</TableData>
+                   <TableData >{content.documentId != null ? (content.documentId):(content?.id)}</TableData>
                    <TableData >{content?.created}</TableData>
                    <TableData >{content?.storage?.name + '-' + content?.storage?.location}</TableData>
                   <TableData >

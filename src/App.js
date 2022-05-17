@@ -32,9 +32,9 @@ const App = () => {
     setIsLoggedIn(localStorage.getItem("authToken") ? true : false);
     setIsAdmin(JSON.parse(localStorage.getItem("isAdmin")));
     if (localStorage.getItem("authToken") === null) setIsLoggedIn(false);
-    console.log(isLoggedIn);
     if (!isLoggedIn) history.push("/login");
-    else if(isLoggedIn) history.push("/");
+    else if(isAdmin) history.push("/");
+    else if(isLoggedIn) history.push("/mount");
     }, [isLoggedIn, isAdmin]);
 
   const handleLogout = () => {
@@ -54,7 +54,7 @@ const App = () => {
       onLogout={handleLogout}
       isAdmin={isAdmin}
         />
-        <Main><HamburgerMenu setHamburgerMenu={openHamburgerMenu}/></Main>
+        <Main><HamburgerMenu setHamburgerMenu={openHamburgerMenu} onLogout={handleLogout}/></Main>
       </>) 
       : (    
         <>  
@@ -69,6 +69,8 @@ const App = () => {
               <Switch>
                 {isLoggedIn ? (
                   <>
+                  {isAdmin &&
+                  <>
                   <ProtectedRoute exact path="/" component={Home} />
                   <ProtectedRoute path="/procurement" component={Procurement} />
                     <ProtectedRoute path="/buyers" component={Buyers} />
@@ -78,6 +80,9 @@ const App = () => {
                     <ProtectedRoute path="/management" component={UserManagement} />
                     <ProtectedRoute path="/other" component={Other} />
                     <ProtectedRoute path="/mount" component={Mount} />
+                    </>
+                  }
+                    {!isAdmin && <ProtectedRoute exact path="/" component={Mount} />}
                     {/*<ProtectedRoute
                       isAdminRoute={true}
                       path="/users"

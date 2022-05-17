@@ -84,7 +84,7 @@ const Receipt = () => {
           console.log(defaultData)
           const filteredReceiptsId = defaultData.filter((receipt) => {
             console.log(receipt);
-            return receipt.id.toString().toLowerCase().includes(input.toLowerCase());
+            return receipt?.documentId?.toString().toLowerCase().includes(input.toLowerCase());
           });
           setInput(input);
           setData(filteredReceiptsId);

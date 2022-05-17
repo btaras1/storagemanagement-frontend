@@ -130,6 +130,7 @@ const ProcurementForm = ({fetchInitialData}) => {
 
   const formik = useFormik({
     initialValues: {
+      documentId: "",
       itemProcurements: [],
       storage: {},
     },
@@ -139,6 +140,7 @@ const ProcurementForm = ({fetchInitialData}) => {
       setIsLoading(true);
       setIsRequestFinished(false);
       const procurement = {
+        documentId: values.documentId,
         storage: JSON.parse(values.storage),
         itemProcurements: values.itemProcurements
       };
@@ -181,6 +183,18 @@ const ProcurementForm = ({fetchInitialData}) => {
         
 <>
     <Form onSubmit={formik.handleSubmit} >
+    <FormOneRow>
+            <InputLabel htmlFor="documentId">Šifra dokumenta</InputLabel>
+            <InputText
+            id="documentId"
+            type="text"
+            {...formik.getFieldProps("documentId")}
+            />
+            {formik.touched.documentId && formik.errors.documentId ? (
+              <InputError>{formik.errors.documentId}</InputError>
+            ) : null}
+            
+          </FormOneRow>
           <FormOneRow>
             <InputLabel htmlFor="storage">Skladište</InputLabel>
             <SelectText

@@ -69,6 +69,7 @@ const ReceiptForm = ({fetchInitialData}) => {
 
   const handleAdd = async () => {
     setInput(0);
+    setSelectedItem(null);
     // const myArray = defaultItems.filter(ar => !formik.values.itemReceipts.find(rm => (rm.item.id === ar.id)))
     // console.log(myArray);
     setOption("");
@@ -158,6 +159,7 @@ const ReceiptForm = ({fetchInitialData}) => {
   const formik = useFormik({
     initialValues: {
       sold: "",
+      documentId: "",
       description: "",
       buyer: {},
       itemReceipts: [],
@@ -174,6 +176,7 @@ const ReceiptForm = ({fetchInitialData}) => {
         if(buyerOption == "NEW"){
             const newReceipt = {
                 sold: values.sold,
+                documentId: values.documentId,
                 description: values.description,
                 itemReceipts: values.itemReceipts,
                 buyer: {
@@ -194,6 +197,7 @@ const ReceiptForm = ({fetchInitialData}) => {
         if(buyerOption == "EXISTING"){
             const newReceipt = {
                 sold: values.sold,
+                documentId: values.documentId,
                 description: values.description,
                 itemReceipts: values.itemReceipts,
                 buyer: selectedBuyer
@@ -268,6 +272,18 @@ useEffect(() => {
               <InputError>{formik.errors.sold}</InputError>
             ) : null}
         </FormOneRow>
+        <FormOneRow>
+            <InputLabel htmlFor="documentId">Šifra dokumenta</InputLabel>
+            <InputText
+            id="documentId"
+            type="text"
+            {...formik.getFieldProps("documentId")}
+            />
+            {formik.touched.documentId && formik.errors.documentId ? (
+              <InputError>{formik.errors.documentId}</InputError>
+            ) : null}
+            
+          </FormOneRow>
         <FormOneRow>
             <InputLabel htmlFor="description">Opis</InputLabel>
             <TextArea
@@ -361,6 +377,7 @@ useEffect(() => {
                 id="buyer"
                 type="select"
                 disabled={false}
+                value={selectedItem}
                 onChange={e => 
                     handleSelectedBuyerChange(e.target.value)}
               >
@@ -423,6 +440,7 @@ useEffect(() => {
               <SelectText
                 id="itemReceipts"
                 type="select"
+
                 disabled={selectedStorage == null}
                 onChange={e => 
                     handleSelectedItemChange(e.target.value)}
@@ -486,7 +504,7 @@ useEffect(() => {
                   {1 > 0 && 
                     <AddButton
                     type="button"
-                    disabled={arrayItem != null && selectedQuantity != null && selectedQuantity > arrayItem.avaliableQuantity }
+                    disabled={arrayItem == null && selectedQuantity == null }
                     onClick={() =>{
                       formik.values.itemReceipts.push({
                         item: selectedItem,
