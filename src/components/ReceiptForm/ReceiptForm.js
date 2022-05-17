@@ -431,7 +431,7 @@ useEffect(() => {
               <OptionText value={null}>--Odaberi--</OptionText>
               {items && items?.map((arrayItem) => (
                 <OptionText key={arrayItem.item.id} value={JSON.stringify(arrayItem)}>
-                  {arrayItem.item.value + " - " + arrayItem.avaliableQuantity}
+                  {arrayItem.item.itemType.value === "DOOR" ? (arrayItem.item.value + '-' + arrayItem.item.color.value + " - " + arrayItem.avaliableQuantity) + " kom" : (arrayItem.item.value + " - " + arrayItem.avaliableQuantity + " kom")}
                 </OptionText>)
               )}
               </SelectText>
@@ -517,7 +517,7 @@ useEffect(() => {
                           <TableBody>
                           {formik.values.itemReceipts.map((itemReceipt, index) => (
                               <TableRow key={index + itemReceipt.item.id + itemReceipt.storage.id}>
-                              <TableData>{itemReceipt.item.value}</TableData>
+                              <TableData>{itemReceipt.item.itemType.value === "DOOR" ? (itemReceipt.item.value + '-' + itemReceipt.item.color.value) : (itemReceipt.item.value )}</TableData>
                               <TableData>{itemReceipt.quantity}</TableData>
                               <TableData>{itemReceipt.storage.name + "-" + itemReceipt.storage.location}</TableData>
                               <TableData >

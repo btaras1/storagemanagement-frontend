@@ -72,7 +72,7 @@ const ReceiptViewForm = ({item}) => {
               <FormRow>
                 
             <LeftColumn>Naziv :</LeftColumn>
-            <RightColumn><InputLabel>{content?.item?.value}</InputLabel></RightColumn>
+            <RightColumn><InputLabel>{content?.item.itemType.value === "DOOR" ? (content?.item.value + '-' + content?.item.color.value) : (content?.item.value )}</InputLabel></RightColumn>
               </FormRow>
               <FormRow>
               <LeftColumn>Opis :</LeftColumn>
