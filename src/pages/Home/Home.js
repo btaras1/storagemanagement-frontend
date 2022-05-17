@@ -55,39 +55,39 @@ const [dataLoaded, setDataLoaded] = useState(false);
   return (
       
     <>
-    {dataLoaded ? (
+    {door || receipt || city || receiptsCount || employeeCount || allItems ? (
       <Section title="Statistika">
           <Grid columns={3}>
-            <Card
+            {door && <Card
             title="Naprodavanija vrata"
             door={true}
             data={door}
-            />
-            <Card
+            />}
+            {receipt && <Card
             title="Zadnja prodaja"
             receipt={true}
             data={receipt}
-            />
-            <Card
+            />}
+            {city && <Card
             title="Grad sa najviše prodaja"
             city={true}
             data={city}
-            />
-            <Card
+            />}
+            {receiptsCount && <Card
             title="Broj prodaja za tekući mjesec"
             count={true}
             data={receiptsCount}
-            />
-            <Card
+            />}
+            {employeeCount && <Card
             title="Broj zaposlenika"
             count={true}
             data={employeeCount}
-            />
-            <Card
+            />}
+            {allItems && <Card
             title="Ukupni broj svih artikala u skladištu"
             count={true}
             data={allItems}
-            />
+            />}
           </Grid>
       </Section>
           
