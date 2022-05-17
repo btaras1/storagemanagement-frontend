@@ -127,7 +127,7 @@ const SaleTable = ({
                 <TableRow key={index}>
                   {console.log(content)}
                     <>
-                    <TableData >{content?.item?.value}</TableData>                  
+                    <TableData >{content?.item.itemType.value === "DOOR" ? (content?.item.value + '-' + content?.item.color.value) : (content?.item.value )}</TableData>                  
                     <TableData >{content?.item?.itemType.value}</TableData> 
                     <TableData>{content.quantity}</TableData>
                     <TableData >{content.notMountedQuantity ? content.notMountedQuantity : 0}</TableData>
@@ -174,7 +174,7 @@ const SaleTable = ({
                     </>
                   ) : (
                     <>
-                    <TableData >{content.value}</TableData>                  
+                    <TableData >{content.type === "DOOR" ? (content.value + '-' + content.color) : (content.value )}</TableData>                  
                     <TableData >{content.type}</TableData> 
                     <TableData>{content.quantity}</TableData>
                     <TableData >{content.notMountedQuantity ? content.notMountedQuantity : 0}</TableData>
