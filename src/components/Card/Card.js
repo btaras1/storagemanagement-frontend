@@ -19,11 +19,11 @@ const Card = ({ title, data, city, door, receipt, count }) => {
               <Row>
                 <Item>
                   <ItemTitle>Grad :</ItemTitle>
-                  <Value>{data.city}</Value>
+                  <Value>{data?.city}</Value>
                 </Item>
                 <Item>
                   <ItemTitle>Broj prodaja :</ItemTitle>
-                  <Value>{data.count}</Value>
+                  <Value>{data?.count}</Value>
                 </Item>
               </Row>
           </Content>
@@ -36,11 +36,11 @@ const Card = ({ title, data, city, door, receipt, count }) => {
           <Row>
                 <Item>
                   <ItemTitle>Naziv :</ItemTitle>
-                  <Value>{data.name}</Value>
+                  <Value>{data?.name}</Value>
                 </Item>
                 <Item>
                   <ItemTitle>Broj prodaja :</ItemTitle>
-                  <Value>{data.count}</Value>
+                  <Value>{data?.count}</Value>
                 </Item>
               </Row>
           </Content>
@@ -65,7 +65,7 @@ const Card = ({ title, data, city, door, receipt, count }) => {
           <Row>
                 <Item>
                   <ItemTitle>Datum prodaje :</ItemTitle>
-                  <Value>{data.sold}</Value>
+                  <Value>{data?.sold}</Value>
                 </Item>
                 <Item>
                   <ItemTitle>Lokacija :</ItemTitle>

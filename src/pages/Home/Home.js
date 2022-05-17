@@ -26,23 +26,30 @@ import Card from "../../components/Card/Card";
 const Home = () => {
   const authToken = localStorage.getItem("authToken");
 
-  const [receiptsCount, setReceiptsCount] = useState(0);
-  const [employeeCount, setEmployeeCount] = useState(0);
-  const [allItems, setAllItems] = useState(0);
+  const [receiptsCount, setReceiptsCount] = useState(null);
+  const [employeeCount, setEmployeeCount] = useState(null);
+  const [allItems, setAllItems] = useState(null);
 
   const [door,setDoor] = useState(null);
   const [receipt,setReceipt] = useState(null);
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState(null);
 
 const [dataLoaded, setDataLoaded] = useState(false);
 
   const initialFetchData = async () => {
-    await getReceiptCountForCurrentMonth(authToken).then((items) => setReceiptsCount(items));
-    await getEmployeeCount(authToken).then((items) => setEmployeeCount(items));
-    await getCountItems(authToken).then((items) => setAllItems(items));
-    await getMostSelledDoor(authToken).then((items) => setDoor(items));
-    await getLatestReceipt(authToken).then((items) => setReceipt(items));
-    await getTopCity(authToken).then((items) => setCity(items));
+    await getReceiptCountForCurrentMonth(authToken).then((items) => setReceiptsCount(items)).catch(err => console.log(err));
+    await getEmployeeCount(authToken).then((items) => setEmployeeCount(items)).catch(err => console.log(err));
+    await getCountItems(authToken).then((items) => setAllItems(items)).catch(err => console.log(err));
+    await getMostSelledDoor(authToken).then((items) => setDoor(items)).catch(err => console.log(err));
+    await getLatestReceipt(authToken).then((items) => setReceipt(items)).catch(err => console.log(err));
+    await getTopCity(authToken).then((items) => setCity(items)).catch(err => console.log(err));
+    console.log("Naj vrata " + door);
+    console.log("Broj zaposlenika " + employeeCount);
+    console.log("Broj artikala " + allItems);
+    console.log("Broj računa u tekućem mjesecu " + receiptsCount);
+    console.log("Zadnji račun " + receipt);
+    console.log("Grad " + city);
+
     setDataLoaded(true);
 
   }
@@ -58,36 +65,42 @@ const [dataLoaded, setDataLoaded] = useState(false);
     {door || receipt || city || receiptsCount || employeeCount || allItems ? (
       <Section title="Statistika">
           <Grid columns={3}>
-            {door && <Card
+            {door && door != null ? (
+             <Card
             title="Naprodavanija vrata"
             door={true}
             data={door}
-            />}
-            {receipt && <Card
+            />) : (null)}
+            {receipt && receipt != null ? (
+            <Card
             title="Zadnja prodaja"
             receipt={true}
             data={receipt}
-            />}
-            {city && <Card
+            /> ) : (null)}
+            {city && city != null ? (
+             <Card
             title="Grad sa najviše prodaja"
             city={true}
             data={city}
-            />}
-            {receiptsCount && <Card
+            />) : (null)}
+            {receiptsCount && receiptsCount != null && receiptsCount != 0 ? (
+            <Card
             title="Broj prodaja za tekući mjesec"
             count={true}
             data={receiptsCount}
-            />}
-            {employeeCount && <Card
+            />) : (null)}
+            {employeeCount && employeeCount != null && employeeCount != 0 ? (
+             <Card
             title="Broj zaposlenika"
             count={true}
             data={employeeCount}
-            />}
-            {allItems && <Card
+            />) : (null)}
+            {allItems && allItems != null && allItems != 0 ? (
+            <Card
             title="Ukupni broj svih artikala u skladištu"
             count={true}
             data={allItems}
-            />}
+            />) : (null)}
           </Grid>
       </Section>
           
