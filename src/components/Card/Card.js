@@ -9,7 +9,7 @@ import {
   Value,
 } from "./CardStyle";
 
-const Card = ({ title, data, city, door, receipt, count }) => {
+const Card = ({ title, data, city, door, receipt, count, itemCount }) => {
   return (
     <>
       {city &&
@@ -26,6 +26,25 @@ const Card = ({ title, data, city, door, receipt, count }) => {
                   <Value>{data?.count}</Value>
                 </Item>
               </Row>
+          </Content>
+        </StatCard>
+        }
+        {itemCount &&
+        <StatCard>
+          <Title>{title}</Title>
+          <Content>
+            {data.map((item) =>
+              <Row>
+                 <Item>
+                              <ItemTitle>Tip artikla :</ItemTitle>
+                              <Value>{item?.value}</Value>
+                            </Item>
+                            <Item>
+                              <ItemTitle>Broj :</ItemTitle>
+                              <Value>{item?.quantity}</Value>
+                            </Item>
+                          </Row>
+            )}
           </Content>
         </StatCard>
         }

@@ -96,11 +96,12 @@ const [dataLoaded, setDataLoaded] = useState(false);
             data={employeeCount}
             />) : (null)}
             {allItems && allItems != null && allItems != 0 ? (
+            allItems.map((item) =>
             <Card
-            title="Ukupni broj svih artikala u skladištu"
+            title={item.value}
             count={true}
-            data={allItems}
-            />) : (null)}
+            data={item.quantity}
+            />)) : (null)}
           </Grid>
       </Section>
           
