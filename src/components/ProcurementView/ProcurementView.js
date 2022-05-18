@@ -35,6 +35,10 @@ const ProcurementView = ({data}) => {
       {data &&
     <Form >
       <FormOneRow>
+            <InputLabel>Br. dokumenta</InputLabel>
+            <InputLabel>{data?.documentId}</InputLabel>
+          </FormOneRow>
+      <FormOneRow>
             <InputLabel>Datum</InputLabel>
             <InputLabel>{data?.created}</InputLabel>
           </FormOneRow>

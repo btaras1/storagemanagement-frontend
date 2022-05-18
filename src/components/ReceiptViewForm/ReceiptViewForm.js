@@ -27,7 +27,7 @@ const ReceiptViewForm = ({item}) => {
     {item &&
         <Form>
           <FormRow><InputLabel>Broj računa :</InputLabel>
-          <InputLabel>{`\xa0` + item.id}</InputLabel></FormRow>
+          <InputLabel>{`\xa0` + item.documentId}</InputLabel></FormRow>
         <FormRow>
             <LeftColumn>
           <FormRow>
